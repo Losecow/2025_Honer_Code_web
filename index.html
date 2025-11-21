@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Honer Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html"><img src="hgu.png" alt="Logo" /></a>
+      </div>
+      <nav>
+        <a href="page1.html">Page #1</a>
+        <a href="page2.html">Page #2</a>
+        <a href="page3.html">Page #3</a>
+        <a href="page4.html">Page #4</a>
+      </nav>
+      <div class="lang"><span>KOR</span> | <span>ENG</span></div>
+    </header>
+
+    <main>
+      <div class="hero">
+        <h1>Honer Code</h1>
+        <p>하나님의 방법으로 세상을 바꾸자</p>
+        <button class="signature-btn" id="signatureBtn">서명하기</button>
+        <!-- <div class="honesty-meter-container">
+          <div class="honesty-score-text" id="honestyScoreText">
+            현재 정직 지수: 0
+          </div>
+          <div class="honesty-meter">
+            <div class="honesty-fill" id="honestyFill"></div>
+          </div>
+          <button class="honesty-btn" id="increaseHonestyBtn">
+            오늘의 양심
+          </button>
+        </div> -->
+      </div>
+    </main>
+
+    <!-- 서명 모달 -->
+    <div id="signatureModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>서명하기</h2>
+          <button class="close-btn" onclick="closeSignatureModal()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="signature-description">
+            <p>
+              저는 <strong>정직하고 신뢰할 수 있는 삶</strong>을 살겠다는 다짐을
+              합니다.<br />
+              하나님의 방법으로 세상을 바꾸고자 하는 의지를 담아 서명해주세요.
+            </p>
+          </div>
+          <div class="signature-container">
+            <div class="signature-label">서명란</div>
+            <canvas id="signatureCanvas"></canvas>
+            <div class="signature-controls">
+              <button class="clear-btn" onclick="clearSignature()">
+                지우기
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="cancel-btn" onclick="closeSignatureModal()">
+            취소
+          </button>
+          <button class="submit-btn" onclick="saveSignature()">
+            서명 완료
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="honesty-meter.js"></script>
+    <script src="signature.js"></script>
+  </body>
+</html>

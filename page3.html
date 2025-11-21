@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시판 - Honer Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html"><img src="hgu.png" alt="Logo" /></a>
+      </div>
+      <nav>
+        <a href="page1.html">Page #1</a>
+        <a href="page2.html">Page #2</a>
+        <a href="page3.html">Page #3</a>
+        <a href="page4.html">Page #4</a>
+      </nav>
+      <div class="lang"><span>KOR</span> | <span>ENG</span></div>
+    </header>
+
+    <main>
+      <div class="board-container">
+        <div class="board-header">
+          <h1>게시판</h1>
+          <button class="write-btn">글쓰기</button>
+        </div>
+
+        <div class="board-table">
+          <!-- 게시글 목록이 JavaScript로 동적으로 생성됩니다 -->
+        </div>
+
+        <div class="pagination">
+          <!-- 페이지네이션이 JavaScript로 동적으로 생성됩니다 -->
+        </div>
+
+        <div class="search-box">
+          <select class="search-select">
+            <option>제목</option>
+            <option>작성자</option>
+            <option>내용</option>
+          </select>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="검색어를 입력하세요"
+          />
+          <button class="search-btn">검색</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- 글쓰기 모달 -->
+    <div id="writeModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>글쓰기</h2>
+          <button class="close-btn" onclick="closeWriteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="postTitle">제목</label>
+            <input type="text" id="postTitle" placeholder="제목을 입력하세요" />
+          </div>
+          <div class="form-group">
+            <label for="postAuthor">작성자</label>
+            <input
+              type="text"
+              id="postAuthor"
+              placeholder="작성자를 입력하세요"
+            />
+          </div>
+          <div class="form-group">
+            <label for="postContent">내용</label>
+            <textarea
+              id="postContent"
+              rows="10"
+              placeholder="내용을 입력하세요"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="cancel-btn" onclick="closeWriteModal()">취소</button>
+          <button class="submit-btn" onclick="savePost()">등록</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 게시글 상세 보기 모달 -->
+    <div id="viewModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="viewTitle"></h2>
+          <button class="close-btn" onclick="closeViewModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="post-info">
+            <span>작성자: <strong id="viewAuthor"></strong></span>
+            <span>작성일: <strong id="viewDate"></strong></span>
+            <span>조회수: <strong id="viewViews"></strong></span>
+          </div>
+          <div class="post-content">
+            <pre id="viewContent"></pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="close-btn-modal" onclick="closeViewModal()">
+            닫기
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="board.js"></script>
+    <script src="honesty-meter.js"></script>
+  </body>
+</html>

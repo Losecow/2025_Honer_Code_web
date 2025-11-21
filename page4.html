@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아너 레벨 테스트 - Honer Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html"><img src="hgu.png" alt="Logo" /></a>
+      </div>
+      <nav>
+        <a href="page1.html">Page #1</a>
+        <a href="page2.html">Page #2</a>
+        <a href="page3.html">Page #3</a>
+        <a href="page4.html">Page #4</a>
+      </nav>
+      <div class="lang"><span>KOR</span> | <span>ENG</span></div>
+    </header>
+
+    <main>
+      <!-- 퀴즈 소개 페이지 -->
+      <div id="quizIntro" class="quiz-section">
+        <div class="quiz-container">
+          <h1 class="quiz-title"><strong>아너 레벨 테스트</strong></h1>
+          <p class="quiz-subtitle">
+            나의 아너 레벨은 어느정도일까?<br />
+            아너 레벨 테스트로 나의 정직함을 테스트 해보세요!
+          </p>
+
+          <div class="quiz-info-box">
+            <div class="info-item">
+              <span class="info-emoji">🧭</span>
+              <span class="info-text"
+                >아너코드는 단순한 규칙이 아니라, 일상 속 작은 선택들이 모여
+                만들어지는 우리의 정직한 태도를 보여주는 문화예요.</span
+              >
+            </div>
+            <div class="info-item">
+              <span class="info-emoji">🔍</span>
+              <span class="info-text"
+                >이 테스트는 여러분이 기숙사, 시험, 금전, 채플, 열람실 같은
+                현실적인 상황에서 어떤 선택을 하는지를 기반으로 여러분의 아너
+                레벨을 살펴봐요.</span
+              >
+            </div>
+            <div class="info-item">
+              <span class="info-emoji">🌿</span>
+              <span class="info-text"
+                >결과에는 여러분의 선택을 토대로 한 개인 맞춤형 아너 실천 조언과
+                일상에서 바로 적용할 수 있는 정직한 행동 가이드도 포함돼
+                있어요.</span
+              >
+            </div>
+          </div>
+
+          <button class="quiz-start-btn" onclick="startQuiz()">시작하기</button>
+        </div>
+      </div>
+
+      <!-- 퀴즈 페이지 -->
+      <div id="quizQuestions" class="quiz-section" style="display: none">
+        <div class="quiz-container">
+          <div class="quiz-progress">
+            <span id="currentQuestion">1</span> /
+            <span id="totalQuestions">5</span>
+          </div>
+
+          <div class="question-container">
+            <h2 class="question-text" id="questionText"></h2>
+
+            <div class="answer-options">
+              <button class="answer-btn" id="answer1" onclick="selectAnswer(0)">
+                <span id="answerText1"></span>
+              </button>
+              <button class="answer-btn" id="answer2" onclick="selectAnswer(1)">
+                <span id="answerText2"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 퀴즈 결과 페이지 -->
+      <div id="quizResult" class="quiz-section" style="display: none">
+        <div class="quiz-container">
+          <h1 class="quiz-title">결과</h1>
+
+          <div class="result-box">
+            <div class="result-type" id="resultType"></div>
+            <div class="result-description" id="resultDescription"></div>
+          </div>
+
+          <div class="result-details">
+            <h3>특징</h3>
+            <ul id="resultFeatures"></ul>
+          </div>
+
+          <div class="result-details">
+            <h3>조언</h3>
+            <p id="resultAdvice"></p>
+          </div>
+
+          <button class="quiz-start-btn" onclick="restartQuiz()">
+            다시하기
+          </button>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="quiz.js"></script>
+  </body>
+</html>

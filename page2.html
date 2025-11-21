@@ -27,9 +27,46 @@
     </header>
 
     <main>
-      <!-- 빈 페이지 -->
+      <div class="map-container">
+        <div class="map-wrapper">
+          <img src="HGU_map.png" alt="HGU 지도" class="map-image" id="mapImage" />
+          
+          <!-- 장소 버튼들 (퍼센트 좌표 기준) -->
+          <button class="location-btn" data-location="1" data-x-percent="38.38" data-y-percent="45.48">
+            <span class="arrow-down">▼</span>
+          </button>
+          <button class="location-btn" data-location="2" data-x-percent="48.74" data-y-percent="32.04">
+            <span class="arrow-down">▼</span>
+          </button>
+          <button class="location-btn" data-location="3" data-x-percent="52.65" data-y-percent="31.66">
+            <span class="arrow-down">▼</span>
+          </button>
+          <button class="location-btn" data-location="4" data-x-percent="61.87" data-y-percent="28.44">
+            <span class="arrow-down">▼</span>
+          </button>
+        </div>
+      </div>
+
+    <!-- 장소 정보 모달 -->
+    <div id="locationModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="locationTitle">장소 정보</h2>
+          <button class="close-btn" onclick="closeLocationModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="locationContent">
+            <!-- 장소 정보가 여기에 표시됩니다 -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="close-btn-modal" onclick="closeLocationModal()">닫기</button>
+        </div>
+      </div>
+    </div>
     </main>
     <script src="script.js"></script>
+    <script src="map.js"></script>
   </body>
 </html>
 

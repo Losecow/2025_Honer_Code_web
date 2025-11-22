@@ -3,14 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page #2 - Honer Code</title>
+    <title>정직 선언문 - Honer Code</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   </head>
   <body>
     <header>
@@ -27,48 +33,110 @@
     </header>
 
     <main>
-      <div class="map-container">
-        <div class="map-wrapper">
-          <img src="HGU_map.png" alt="HGU 지도" class="map-image" id="mapImage" />
-          
-          <!-- 장소 버튼들 (퍼센트 좌표 기준) -->
-          <button class="location-btn" data-location="1" data-x-percent="38.38" data-y-percent="45.48">
-            <span class="arrow-down">▼</span>
-          </button>
-          <button class="location-btn" data-location="2" data-x-percent="48.74" data-y-percent="32.04">
-            <span class="arrow-down">▼</span>
-          </button>
-          <button class="location-btn" data-location="3" data-x-percent="52.65" data-y-percent="31.66">
-            <span class="arrow-down">▼</span>
-          </button>
-          <button class="location-btn" data-location="4" data-x-percent="61.87" data-y-percent="28.44">
-            <span class="arrow-down">▼</span>
-          </button>
-        </div>
-      </div>
+      <div class="declaration-container">
+        <!-- 모서리 장식 요소들 -->
+        <div class="corner-decoration corner-tl"></div>
+        <div class="corner-decoration corner-tr"></div>
+        <div class="corner-decoration corner-bl"></div>
+        <div class="corner-decoration corner-br"></div>
 
-    <!-- 장소 정보 모달 -->
-    <div id="locationModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 id="locationTitle">장소 정보</h2>
-          <button class="close-btn" onclick="closeLocationModal()">&times;</button>
+        <div class="declaration-header">
+          <img src="hgu.png" alt="HGU Logo" class="declaration-logo" />
+          <h2>정직 선언문</h2>
         </div>
-        <div class="modal-body">
-          <div id="locationContent">
-            <!-- 장소 정보가 여기에 표시됩니다 -->
+
+        <div class="declaration-content">
+          <p class="declaration-text">
+            나
+            <span
+              class="blank-field name-field"
+              data-field="name"
+              contenteditable="true"
+              placeholder="이름"
+              id="nameField"
+              >____________</span
+            >은(는)
+          </p>
+          <p class="declaration-text">
+            한동대학교 공동체의 일원으로서 정직과 책임의 가치를 지키고,
+          </p>
+          <p class="declaration-text">
+            아너코드의 정신을 일상 속에서 실천할 것을 선언합니다.
+          </p>
+          <p class="declaration-text">
+            나는 모든 학업 활동에서 부정행위·대리행위·표절 등
+          </p>
+          <p class="declaration-text">
+            공동체의 신뢰를 해치는 행동을 하지 않겠습니다.
+          </p>
+          <p class="declaration-text">
+            또한, 정직한 선택이 공동체를 건강하게 한다는 사실을 기억하며
+          </p>
+          <p class="declaration-text">
+            동료들의 노력을 존중하고, 스스로에게 부끄럽지 않은 행동을
+            선택하겠습니다.
+          </p>
+
+          <div class="declaration-info-fields">
+            <div class="info-field-group">
+              <label for="studentIdInput">학번</label>
+              <input
+                type="text"
+                id="studentIdInput"
+                class="info-input"
+                placeholder="학번을 입력하세요"
+              />
+            </div>
+            <div class="info-field-group">
+              <label for="majorInput">전공</label>
+              <input
+                type="text"
+                id="majorInput"
+                class="info-input"
+                placeholder="전공을 입력하세요"
+              />
+            </div>
+          </div>
+
+          <p class="declaration-date">
+            <span class="date-display" id="dateField"></span>
+          </p>
+        </div>
+
+        <div class="signature-section">
+          <h3>서명</h3>
+          <div class="signature-container">
+            <canvas id="declarationCanvas"></canvas>
+            <div class="signature-controls">
+              <button class="clear-btn" onclick="clearDeclarationSignature()">
+                지우기
+              </button>
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="close-btn-modal" onclick="closeLocationModal()">닫기</button>
+
+        <div class="declaration-actions">
+          <button
+            class="confirm-btn"
+            onclick="confirmDeclaration()"
+            disabled
+            id="confirmBtn"
+          >
+            확인
+          </button>
+          <button
+            class="pdf-download-btn"
+            onclick="downloadPDF()"
+            disabled
+            id="pdfDownloadBtn"
+          >
+            PDF 다운로드
+          </button>
         </div>
       </div>
-    </div>
     </main>
+
     <script src="script.js"></script>
-    <script src="map.js"></script>
+    <script src="declaration.js"></script>
   </body>
 </html>
-
-
-

@@ -247,29 +247,38 @@ function displaySignatures() {
 
 // 초기화
 document.addEventListener("DOMContentLoaded", function () {
-  // 서명 버튼 클릭 이벤트
-  const signatureBtn = document.getElementById("signatureBtn");
-  if (signatureBtn) {
-    signatureBtn.addEventListener("click", openSignatureModal);
+  // 서명 모달이 있는 경우에만 모달 이벤트 리스너 추가 (메인 페이지)
+  const signatureModal = document.getElementById("signatureModal");
+  if (signatureModal) {
+    // 서명 버튼 클릭 이벤트 (모달이 있을 때만)
+    const signatureBtn = document.getElementById("signatureBtn");
+    if (signatureBtn && !signatureBtn.href) {
+      // 링크가 아닌 버튼인 경우에만 이벤트 리스너 추가
+      signatureBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        openSignatureModal();
+      });
+    }
+
+    // 모달 외부 클릭 시 닫기
+    window.addEventListener("click", function (e) {
+      if (e.target === signatureModal) {
+        closeSignatureModal();
+      }
+    });
   }
 
-  // 모달 외부 클릭 시 닫기
-  window.addEventListener("click", function (e) {
-    const signatureModal = document.getElementById("signatureModal");
-    if (e.target === signatureModal) {
-      closeSignatureModal();
-    }
-  });
+  // 페이지 로드 시 저장된 서명 표시 (메인 페이지에서만)
+  if (window.location.pathname.includes("index.html") || window.location.pathname === "/" || window.location.pathname.endsWith("/")) {
+    displaySignatures();
 
-  // 페이지 로드 시 저장된 서명 표시
-  displaySignatures();
-
-  // 창 크기 변경 시 서명 위치 재조정
-  let resizeTimer;
-  window.addEventListener("resize", function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      displaySignatures();
-    }, 250);
-  });
+    // 창 크기 변경 시 서명 위치 재조정
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        displaySignatures();
+      }, 250);
+    });
+  }
 });

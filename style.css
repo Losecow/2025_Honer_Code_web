@@ -448,11 +448,76 @@ main {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   margin-bottom: 30px;
+  padding: 0;
+}
+
+/* 카드 형태 게시글 */
+.post-card {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.post-card:hover {
+  background-color: #f8f9fa;
+}
+
+.post-card:last-child {
+  border-bottom: none;
+}
+
+.post-card.empty-card {
+  border-bottom: none;
+}
+
+.post-content-text {
+  margin-bottom: 12px;
+}
+
+.post-content-text .post-link {
+  color: #1a1a1a;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1.6;
+  display: block;
+  transition: color 0.2s;
+}
+
+.post-content-text .post-link:hover {
+  color: #3182f6;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.comment-badge {
+  color: #3182f6;
+  font-weight: 500;
+}
+
+.like-badge {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.post-time {
+  color: #999;
+}
+
+.post-author {
+  color: #666;
+  font-weight: 500;
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 80px 1fr 120px 120px 100px;
+  grid-template-columns: 80px 1fr 120px 120px 100px 100px;
   gap: 20px;
   padding: 20px 30px;
   background: #f8f9fa;
@@ -464,7 +529,7 @@ main {
 
 .table-row {
   display: grid;
-  grid-template-columns: 80px 1fr 120px 120px 100px;
+  grid-template-columns: 80px 1fr 120px 120px 100px 100px;
   gap: 20px;
   padding: 20px 30px;
   border-bottom: 1px solid #e9ecef;
@@ -515,6 +580,20 @@ main {
   text-align: center;
   color: #666;
   font-size: 0.9rem;
+}
+
+.col-likes {
+  text-align: center;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.comment-count {
+  color: #3182f6;
+  font-size: 0.85rem;
+  margin-left: 8px;
+  font-weight: 600;
 }
 
 .pagination {
@@ -600,7 +679,7 @@ main {
 @media (max-width: 1024px) {
   .table-header,
   .table-row {
-    grid-template-columns: 60px 1fr 100px 100px 80px;
+    grid-template-columns: 60px 1fr 100px 100px 80px 80px;
     gap: 15px;
     padding: 15px 20px;
   }
@@ -654,6 +733,11 @@ main {
 
   .col-views::before {
     content: "조회수: ";
+    font-weight: 600;
+  }
+
+  .col-likes::before {
+    content: "좋아요: ";
     font-weight: 600;
   }
 
@@ -790,6 +874,34 @@ main {
   min-height: 200px;
 }
 
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #3182f6;
+}
+
+.checkbox-label:hover {
+  color: #1a1a1a;
+}
+
+.form-group input:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -863,6 +975,174 @@ main {
   line-height: 1.6;
   color: #1a1a1a;
   margin: 0;
+}
+
+.post-actions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.like-btn {
+  padding: 10px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  color: #495057;
+}
+
+.like-btn:hover {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+  transform: translateY(-2px);
+}
+
+.like-btn.liked {
+  background: #fee;
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.like-btn.liked:hover {
+  background: #fdd;
+}
+
+/* 댓글 섹션 스타일 */
+.comments-section {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid #e9ecef;
+}
+
+.comments-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.comments-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 24px;
+  padding-right: 10px;
+}
+
+.comments-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comments-container::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.comments-container::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border-radius: 10px;
+}
+
+.comments-container::-webkit-scrollbar-thumb:hover {
+  background: #adb5bd;
+}
+
+.comment-item {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border-left: 3px solid #3182f6;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 0.95rem;
+}
+
+.comment-date {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.comment-content {
+  color: #495057;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.no-comments {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 0.95rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.comment-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.comment-form .form-group {
+  margin-bottom: 16px;
+}
+
+.comment-form .form-group label {
+  display: block;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: white;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.comment-form input:focus,
+.comment-form textarea:focus {
+  outline: none;
+  border-color: #3182f6;
+  box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.1);
+}
+
+.comment-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.comment-form .submit-btn {
+  width: 100%;
+  margin-top: 8px;
 }
 
 .page-btn:disabled {
@@ -1297,7 +1577,7 @@ main {
   font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
+
   /* 골드 장식 테두리 */
   border: 3px solid #d4af37;
   border-radius: 8px;
@@ -1321,9 +1601,20 @@ main {
   border-right: none;
   border-bottom: none;
   border-radius: 8px 0 0 0;
-  background: 
-    radial-gradient(ellipse 18px 12px at top left, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%),
-    radial-gradient(ellipse 12px 18px at top left, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%);
+  background: radial-gradient(
+      ellipse 18px 12px at top left,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse 12px 18px at top left,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    );
   background-size: 30px 30px;
   background-position: top left;
   background-repeat: no-repeat;
@@ -1337,9 +1628,20 @@ main {
   border-left: none;
   border-bottom: none;
   border-radius: 0 8px 0 0;
-  background: 
-    radial-gradient(ellipse 18px 12px at top right, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%),
-    radial-gradient(ellipse 12px 18px at top right, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%);
+  background: radial-gradient(
+      ellipse 18px 12px at top right,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse 12px 18px at top right,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    );
   background-size: 30px 30px;
   background-position: top right;
   background-repeat: no-repeat;
@@ -1353,9 +1655,20 @@ main {
   border-right: none;
   border-top: none;
   border-radius: 0 0 0 8px;
-  background: 
-    radial-gradient(ellipse 18px 12px at bottom left, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%),
-    radial-gradient(ellipse 12px 18px at bottom left, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%);
+  background: radial-gradient(
+      ellipse 18px 12px at bottom left,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse 12px 18px at bottom left,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    );
   background-size: 30px 30px;
   background-position: bottom left;
   background-repeat: no-repeat;
@@ -1369,9 +1682,20 @@ main {
   border-left: none;
   border-top: none;
   border-radius: 0 0 8px 0;
-  background: 
-    radial-gradient(ellipse 18px 12px at bottom right, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%),
-    radial-gradient(ellipse 12px 18px at bottom right, transparent 35%, #d4af37 35%, #d4af37 45%, transparent 45%);
+  background: radial-gradient(
+      ellipse 18px 12px at bottom right,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse 12px 18px at bottom right,
+      transparent 35%,
+      #d4af37 35%,
+      #d4af37 45%,
+      transparent 45%
+    );
   background-size: 30px 30px;
   background-position: bottom right;
   background-repeat: no-repeat;

@@ -29,8 +29,8 @@
     <main>
       <div class="board-container">
         <div class="board-header">
-          <h1>게시판</h1>
-          <button class="write-btn">글쓰기</button>
+          <h1>명예 지키기 게시판</h1>
+          <button class="write-btn" onclick="openWriteModal()">글쓰기</button>
         </div>
 
         <div class="board-table">
@@ -76,6 +76,14 @@
               id="postAuthor"
               placeholder="작성자를 입력하세요"
             />
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                id="postAnonymous"
+                onchange="toggleAuthorInput('post')"
+              />
+              <span>익명으로 작성</span>
+            </label>
           </div>
           <div class="form-group">
             <label for="postContent">내용</label>
@@ -105,9 +113,56 @@
             <span>작성자: <strong id="viewAuthor"></strong></span>
             <span>작성일: <strong id="viewDate"></strong></span>
             <span>조회수: <strong id="viewViews"></strong></span>
+            <span>좋아요: <strong id="likeCount">0</strong></span>
           </div>
           <div class="post-content">
             <pre id="viewContent"></pre>
+          </div>
+          <div class="post-actions">
+            <button id="likeBtn" class="like-btn" onclick="toggleLike()">
+              🤍 좋아요
+            </button>
+          </div>
+          <div class="comments-section">
+            <h3 class="comments-title">
+              댓글 (<span id="commentsCount">0</span>)
+            </h3>
+            <div id="commentsContainer" class="comments-container">
+              <!-- 댓글 목록이 여기에 동적으로 생성됩니다 -->
+            </div>
+            <div class="comment-form">
+              <div class="form-group">
+                <label for="commentAuthor">작성자</label>
+                <input
+                  type="text"
+                  id="commentAuthor"
+                  placeholder="작성자를 입력하세요"
+                />
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="commentAnonymous"
+                    onchange="toggleAuthorInput('comment')"
+                  />
+                  <span>익명으로 작성</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="commentContent">댓글</label>
+                <textarea
+                  id="commentContent"
+                  rows="3"
+                  placeholder="댓글을 입력하세요"
+                ></textarea>
+              </div>
+              <button
+                class="submit-btn"
+                id="commentSubmitBtn"
+                onclick="addComment()"
+              >
+                댓글 작성
+              </button>
+            </div>
           </div>
         </div>
         <div class="modal-footer">

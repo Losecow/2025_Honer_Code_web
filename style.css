@@ -7,7 +7,14 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(180deg, #e8f0fe 0%, #c5d9f0 100%);
+  background: linear-gradient(
+    180deg,
+    #e8f0fe 0%,
+    #c5d9f0 50%,
+    #e0e7f0 70%,
+    #f0f4f8 85%,
+    #ffffff 100%
+  );
   min-height: 100vh;
   color: #1a1a1a;
   overflow-x: hidden;
@@ -129,6 +136,155 @@ header {
   transform: translateY(0);
 }
 
+/* 성경 구절 스타일 (hero 섹션 내부) */
+.hero .bible-verse {
+  max-width: 900px;
+  margin: 60px auto 0;
+  padding: 20px 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.hero .bible-verse .verse-text {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 15px;
+  font-style: italic;
+  text-align: center;
+}
+
+.hero .bible-verse .verse-reference {
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* 아너코드 소개 섹션 스타일 */
+.honor-code-intro-section {
+  width: 100%;
+  padding: 120px 120px;
+  background: #ffffff;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.honor-code-container {
+  max-width: 1400px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.honor-code-text-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+
+.honor-code-title {
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-align: left;
+}
+
+.honor-code-text {
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-align: left;
+}
+
+.honor-code-image-column {
+  width: 100%;
+  height: 500px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-slider {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.slider-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.slider-image.active {
+  opacity: 1;
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: white;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
 nav {
   display: flex;
   gap: 30px;
@@ -170,11 +326,6 @@ nav a:hover {
 /* Main Content */
 main {
   padding-top: 80px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: relative;
   z-index: 10; /* hero 섹션이 서명 위에 표시되도록 */
 }
@@ -183,7 +334,11 @@ main {
   text-align: center;
   position: relative;
   z-index: 10; /* 서명 위에 표시 */
-  margin-bottom: 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero h1 {
@@ -341,6 +496,58 @@ main {
     font-size: 1.2rem;
   }
 
+  .hero .bible-verse {
+    margin-top: 50px;
+    padding: 50px 40px;
+  }
+
+  .honor-code-intro-section {
+    padding: 100px 20px;
+  }
+
+  .honor-code-container {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .honor-code-text-column {
+    order: 1;
+  }
+
+  .honor-code-image-column {
+    order: 2;
+    height: 400px;
+  }
+
+  .slider-dots {
+    bottom: 15px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dot.active {
+    width: 25px;
+  }
+
+  .honor-code-title {
+    font-size: 3.5rem;
+  }
+
+  .honor-code-text {
+    font-size: 1.05rem;
+  }
+
+  .hero .bible-verse .verse-text {
+    font-size: 0.85rem;
+  }
+
+  .hero .bible-verse .verse-reference {
+    font-size: 0.75rem;
+  }
+
   nav {
     gap: 20px;
   }
@@ -381,8 +588,68 @@ main {
     font-size: 2.5rem;
   }
 
+  .hero {
+    min-height: 60vh;
+  }
+
   .hero p {
     font-size: 1rem;
+  }
+
+  .hero .bible-verse {
+    margin-top: 40px;
+    padding: 40px 25px;
+  }
+
+  .hero .bible-verse .verse-text {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .hero .bible-verse .verse-reference {
+    font-size: 0.7rem;
+  }
+
+  .honor-code-intro-section {
+    padding: 80px 15px;
+  }
+
+  .honor-code-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .honor-code-text-column {
+    order: 1;
+  }
+
+  .honor-code-image-column {
+    order: 2;
+    height: 300px;
+  }
+
+  .slider-dots {
+    bottom: 10px;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .dot.active {
+    width: 20px;
+  }
+
+  .honor-code-title {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  .honor-code-text {
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
   .download-buttons {

@@ -10,6 +10,10 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -18,10 +22,10 @@
         <a href="index.html"><img src="hgu.png" alt="Logo" /></a>
       </div>
       <nav>
-        <a href="page1.html">Page #1</a>
-        <a href="page2.html">Page #2</a>
-        <a href="page3.html">Page #3</a>
-        <a href="page4.html">Page #4</a>
+        <a href="page1.html">명예서약서</a> |
+        <a href="page2.html">섬김이 지도</a> |
+        <a href="page3.html">명예 게시판</a> |
+        <a href="page4.html">아너 레벨 테스트</a>
       </nav>
       <div class="lang"><span>KOR</span> | <span>ENG</span></div>
     </header>
@@ -30,7 +34,17 @@
       <div class="hero">
         <h1>Honer Code</h1>
         <p>하나님의 방법으로 세상을 바꾸자</p>
-        <a href="page2.html" class="signature-btn" id="signatureBtn">서명하기</a>
+        <a href="page1.html" class="signature-btn" id="signatureBtn"
+          >서명하기</a
+        >
+        <div class="bible-verse">
+          <p class="verse-text">
+            "너희는 이 세대를 본받지 말고 오직 마음을 새롭게 함으로 변화를 받아
+            하나님의 선하시고 기뻐하시고 온전하신 뜻이 무엇인지 분별하도록
+            하라."
+          </p>
+          <p class="verse-reference">[로마서 12장 2절]</p>
+        </div>
         <!-- <div class="honesty-meter-container">
           <div class="honesty-score-text" id="honestyScoreText">
             현재 정직 지수: 0
@@ -43,6 +57,54 @@
           </button>
         </div> -->
       </div>
+
+      <section class="honor-code-intro-section">
+        <div class="honor-code-container">
+          <div class="honor-code-text-column">
+            <h2 class="honor-code-title">아너코드란?</h2>
+            <p class="honor-code-text">
+              아너코드란, 한동명예제도라고도 하며 1995년도 개교 이래 하나님의
+              방법으로 세상을 바꾸자는 비전을 품고 모인 한동인들이 자발적으로
+              세운 자랑스러운 문화이자 하나님과 사람, 그리고 자기 자신 앞에
+              스스로 서약한 다짐이다.
+            </p>
+          </div>
+          <div class="honor-code-image-column">
+            <div class="image-slider">
+              <div class="slider-container">
+                <img
+                  src="1.jpeg"
+                  alt="아너코드 이미지 1"
+                  class="slider-image active"
+                />
+                <img
+                  src="2.jpeg"
+                  alt="아너코드 이미지 2"
+                  class="slider-image"
+                />
+                <img src="3.png" alt="아너코드 이미지 3" class="slider-image" />
+                <img src="4.png" alt="아너코드 이미지 4" class="slider-image" />
+                <img
+                  src="5.jpeg"
+                  alt="아너코드 이미지 5"
+                  class="slider-image"
+                />
+                <img src="6.png" alt="아너코드 이미지 6" class="slider-image" />
+                <img src="7.png" alt="아너코드 이미지 7" class="slider-image" />
+              </div>
+              <div class="slider-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+                <span class="dot" data-slide="4"></span>
+                <span class="dot" data-slide="5"></span>
+                <span class="dot" data-slide="6"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- 서명 모달 -->
@@ -86,5 +148,6 @@
     <script src="script.js"></script>
     <script src="honesty-meter.js"></script>
     <script src="signature.js"></script>
+    <script src="honor-code-slider.js"></script>
   </body>
 </html>

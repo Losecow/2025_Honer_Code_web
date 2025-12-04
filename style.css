@@ -2183,12 +2183,13 @@ main {
 
 .declaration-actions {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 15px;
   margin-top: 40px;
   padding-top: 30px;
   border-top: 2px solid #e9ecef;
-  flex-wrap: wrap;
 }
 
 .confirm-btn {
@@ -2272,12 +2273,15 @@ main {
 
   .declaration-actions {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    gap: 10px;
   }
 
   .confirm-btn,
   .pdf-download-btn {
     width: 100%;
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
 
   .info-field-group {

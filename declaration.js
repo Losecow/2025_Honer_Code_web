@@ -367,24 +367,35 @@ window.downloadPDF = function () {
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * pageWidth) / canvas.width;
-
-    // 이미지가 한 페이지보다 크면 여러 페이지로 나누기
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    // 첫 페이지에 이미지 추가
-    doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    // 나머지 페이지 추가
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      doc.addPage();
-      doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+    
+    // 여백 설정 (상하좌우 각 10mm)
+    const margin = 10;
+    const contentWidth = pageWidth - (margin * 2);
+    const contentHeight = pageHeight - (margin * 2);
+    
+    // 이미지 비율 계산
+    const imgAspectRatio = canvas.width / canvas.height;
+    const contentAspectRatio = contentWidth / contentHeight;
+    
+    let imgWidth, imgHeight;
+    
+    // 이미지가 A4 용지 안에 맞춤 크기로 들어가도록 스케일링
+    if (imgAspectRatio > contentAspectRatio) {
+      // 이미지가 더 넓은 경우 - 너비에 맞춤
+      imgWidth = contentWidth;
+      imgHeight = contentWidth / imgAspectRatio;
+    } else {
+      // 이미지가 더 높은 경우 - 높이에 맞춤
+      imgHeight = contentHeight;
+      imgWidth = contentHeight * imgAspectRatio;
     }
+    
+    // 중앙 정렬을 위한 위치 계산
+    const x = (pageWidth - imgWidth) / 2;
+    const y = (pageHeight - imgHeight) / 2;
+
+    // A4 용지 한 페이지에 이미지 추가
+    doc.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
 
     // PDF 저장
     const fileName = `정직선언문_${data.name}_${data.date.replace(/\s/g, "_")}.pdf`;

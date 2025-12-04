@@ -98,7 +98,7 @@ function stopDeclarationDrawing() {
     isDrawing = false;
     declarationCtx.beginPath();
     checkButtonsEnabled();
-    saveDeclarationSignature();
+    // 저장은 하지 않음 - 확인 버튼을 눌렀을 때만 저장
   }
 }
 
@@ -207,7 +207,13 @@ function setupFormValidation() {
 
 // 서명 저장 (localStorage)
 function saveDeclarationSignature() {
-  if (!declarationCanvas || !hasSigned) return;
+  if (!declarationCanvas) return;
+  
+  // 실제로 서명이 있는지 확인
+  const signatureExists = checkSignatureExists();
+  if (!signatureExists) {
+    return;
+  }
 
   // Canvas를 PNG 이미지로 변환 (투명 배경 포함)
   const signatureData = declarationCanvas.toDataURL("image/png");
@@ -273,12 +279,14 @@ function getDeclarationData() {
 
 // 확인 버튼 클릭 (메인 페이지로 이동)
 window.confirmDeclaration = function () {
-  if (!hasSigned) {
+  // 서명이 실제로 있는지 확인
+  const signatureExists = checkSignatureExists();
+  if (!signatureExists) {
     alert("서명을 작성해주세요.");
     return;
   }
 
-  // 서명 저장 (이미 저장되어 있지만 재확인)
+  // 서명 저장 (확인 버튼을 눌렀을 때만 저장)
   saveDeclarationSignature();
   
   // 메인 페이지로 이동

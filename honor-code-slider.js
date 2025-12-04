@@ -15,6 +15,12 @@ function showSlide(index) {
   // 현재 슬라이드에 active 클래스 추가
   if (images[index]) {
     images[index].classList.add("active");
+    // 이미지 이름 업데이트
+    const imageName = images[index].getAttribute("data-name");
+    const nameElement = document.getElementById("sliderImageName");
+    if (nameElement && imageName) {
+      nameElement.textContent = imageName;
+    }
   }
   if (dots[index]) {
     dots[index].classList.add("active");

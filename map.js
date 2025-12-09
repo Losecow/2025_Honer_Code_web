@@ -52,16 +52,67 @@ window.closeLocationModal = function () {
   }
 };
 
+// 모달 닫기 타이머
+let modalCloseTimer = null;
+let isModalHovered = false;
+let isButtonHovered = false;
+
 // 초기화
 document.addEventListener("DOMContentLoaded", function () {
   // 모든 장소 버튼에 이벤트 리스너 추가
   const locationButtons = document.querySelectorAll(".location-btn");
   locationButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
+    // 마우스 오버 시 모달 열기
+    btn.addEventListener("mouseenter", function () {
+      isButtonHovered = true;
+      // 기존 타이머 취소
+      if (modalCloseTimer) {
+        clearTimeout(modalCloseTimer);
+        modalCloseTimer = null;
+      }
+      
       const locationId = parseInt(this.getAttribute("data-location"));
       openLocationModal(locationId);
     });
+    
+    // 버튼에서 마우스가 벗어날 때
+    btn.addEventListener("mouseleave", function () {
+      isButtonHovered = false;
+      // 모달 위에 마우스가 있으면 닫지 않음
+      if (!isModalHovered) {
+        modalCloseTimer = setTimeout(function() {
+          if (!isButtonHovered && !isModalHovered) {
+            closeLocationModal();
+          }
+        }, 100);
+      }
+    });
   });
+
+  // 모달 이벤트 처리
+  const locationModal = document.getElementById("locationModal");
+  if (locationModal) {
+    locationModal.addEventListener("mouseenter", function() {
+      isModalHovered = true;
+      // 타이머 취소
+      if (modalCloseTimer) {
+        clearTimeout(modalCloseTimer);
+        modalCloseTimer = null;
+      }
+    });
+    
+    locationModal.addEventListener("mouseleave", function() {
+      isModalHovered = false;
+      // 버튼 위에 마우스가 있으면 닫지 않음
+      if (!isButtonHovered) {
+        modalCloseTimer = setTimeout(function() {
+          if (!isButtonHovered && !isModalHovered) {
+            closeLocationModal();
+          }
+        }, 100);
+      }
+    });
+  }
 
   // 모달 외부 클릭 시 닫기
   window.addEventListener("click", function (e) {

@@ -1064,6 +1064,15 @@ main {
   animation: fadeIn 0.3s;
 }
 
+/* locationModal은 배경 클릭을 통과시켜 깜빡임 방지 */
+#locationModal {
+  pointer-events: none;
+}
+
+#locationModal .modal-content {
+  pointer-events: auto;
+}
+
 .modal-content {
   background-color: white;
   border-radius: 16px;

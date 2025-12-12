@@ -64,9 +64,30 @@ function resetInterval() {
   startInterval();
 }
 
+// 이미지 경로 설정 (한글 파일명 URL 인코딩 처리)
+function setImageSources() {
+  images.forEach((img) => {
+    const src = img.getAttribute("data-src");
+    if (src) {
+      // 한글 파일명을 URL 인코딩하여 설정
+      // 경로의 파일명 부분만 인코딩 (디렉토리는 그대로)
+      const pathParts = src.split("/");
+      const fileName = pathParts.pop();
+      const encodedFileName = encodeURIComponent(fileName);
+      const encodedPath = pathParts.length > 0 
+        ? pathParts.join("/") + "/" + encodedFileName
+        : encodedFileName;
+      img.src = encodedPath;
+    }
+  });
+}
+
 // 초기화
 document.addEventListener("DOMContentLoaded", function () {
   if (images.length > 0) {
+    // 이미지 경로 설정 (한글 파일명 인코딩)
+    setImageSources();
+    
     // 첫 번째 이미지 표시
     showSlide(0);
 

@@ -21,6 +21,21 @@ function showSlide(index) {
     if (nameElement && imageName) {
       nameElement.textContent = imageName;
     }
+    // 출처 정보 업데이트
+    const credit = images[index].getAttribute("data-credit");
+    const creditLink = images[index].getAttribute("data-credit-link");
+    const creditElement = document.getElementById("sliderImageCredit");
+    if (creditElement) {
+      if (credit && creditLink) {
+        creditElement.innerHTML = `<a href="${creditLink}" target="_blank" rel="noopener noreferrer">${credit}</a>`;
+        creditElement.style.display = "block";
+      } else if (credit) {
+        creditElement.textContent = credit;
+        creditElement.style.display = "block";
+      } else {
+        creditElement.style.display = "none";
+      }
+    }
   }
   if (dots[index]) {
     dots[index].classList.add("active");

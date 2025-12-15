@@ -288,6 +288,33 @@ const translationEntries = {
 
 let currentLang = "ko";
 
+const navTextMap = {
+  'a[href="page1.html"]': { ko: "명예서약서", en: "Honor Pledge" },
+  'a[href="page2.html"]': { ko: "섬김이 지도", en: "Servant Map" },
+  'a[href="page3.html"]': { ko: "명예 게시판", en: "Honor Board" },
+  'a[href="page4.html"]': { ko: "아너 레벨 테스트", en: "Honor Level Test" },
+};
+
+function applyNavTexts(lang) {
+  Object.entries(navTextMap).forEach(([selector, textObj]) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      if (!el.dataset.originalText) {
+        el.dataset.originalText = el.textContent.trim();
+      }
+      if (lang === "en") {
+        el.textContent = textObj.en;
+      } else {
+        el.textContent = el.dataset.originalText || textObj.ko;
+      }
+    });
+  });
+  const langSpans = document.querySelectorAll(".lang span");
+  if (langSpans.length >= 2) {
+    langSpans[0].textContent = "KOR";
+    langSpans[1].textContent = "ENG";
+  }
+}
+
 function getPageKey() {
   const path = window.location.pathname;
   if (path.includes("page1")) return "page1";
@@ -391,12 +418,16 @@ function changeLanguage(lang) {
   } else {
     applyTranslations("en");
   }
+  applyNavTexts(lang);
 
   if (typeof updateMapTranslations === "function") {
     updateMapTranslations(lang);
   }
   if (typeof updateQuizTranslations === "function") {
     updateQuizTranslations(lang);
+  }
+  if (typeof updateBoardTranslations === "function") {
+    updateBoardTranslations(lang);
   }
 
   document.documentElement.lang = lang;

@@ -5,6 +5,51 @@ const postsPerPage = 10;
 let searchQuery = "";
 let searchType = "title";
 
+// 다국어 문구
+const boardTexts = {
+  ko: {
+    empty: "게시글이 없습니다.",
+    prev: "이전",
+    next: "다음",
+    like: "🤍 좋아요",
+    unlike: "❤️ 좋아요 취소",
+    alertOpenPost: "게시글을 먼저 열어주세요.",
+    alertCommentRequired: "작성자와 댓글 내용을 입력해주세요.",
+    authorPlaceholder: "작성자를 입력하세요",
+    anonymousPlaceholder: "익명으로 작성됩니다",
+    author: "작성자",
+    anonymous: "익명",
+    submitComment: "댓글 작성",
+  },
+  en: {
+    empty: "No posts yet.",
+    prev: "Prev",
+    next: "Next",
+    like: "🤍 Like",
+    unlike: "❤️ Unlike",
+    alertOpenPost: "Please open a post first.",
+    alertCommentRequired: "Please enter author and comment content.",
+    authorPlaceholder: "Enter author",
+    anonymousPlaceholder: "Posted anonymously",
+    author: "Author",
+    anonymous: "Anonymous",
+    submitComment: "Submit Comment",
+  },
+};
+
+function getBoardLang() {
+  return (
+    (typeof window !== "undefined" && window.currentLang) ||
+    localStorage.getItem("preferredLanguage") ||
+    "ko"
+  );
+}
+
+function tBoard(key) {
+  const lang = getBoardLang();
+  return boardTexts[lang]?.[key] ?? boardTexts.ko[key] ?? "";
+}
+
 // 게시글 ID 카운터
 let postIdCounter = parseInt(localStorage.getItem("postIdCounter")) || 1;
 
@@ -44,7 +89,7 @@ function renderPosts() {
     html += `
       <div class="post-card empty-card">
         <div style="text-align: center; padding: 40px; color: #999;">
-          게시글이 없습니다.
+          ${tBoard("empty")}
         </div>
       </div>
     `;
@@ -108,9 +153,9 @@ function renderPagination(totalPages) {
   let html = "";
 
   // 이전 버튼
-  html += `<button class="page-btn" ${
+  html += `<button class="page-btn" data-role="prev" ${
     currentPage === 1 ? "disabled" : ""
-  }>이전</button>`;
+  }>${tBoard("prev")}</button>`;
 
   // 페이지 번호
   for (let i = 1; i <= totalPages; i++) {
@@ -120,19 +165,19 @@ function renderPagination(totalPages) {
   }
 
   // 다음 버튼
-  html += `<button class="page-btn" ${
+  html += `<button class="page-btn" data-role="next" ${
     currentPage === totalPages ? "disabled" : ""
-  }>다음</button>`;
+  }>${tBoard("next")}</button>`;
 
   pagination.innerHTML = html;
 
   // 페이지네이션 이벤트
   pagination.querySelectorAll(".page-btn").forEach((btn, index) => {
     btn.addEventListener("click", () => {
-      if (btn.textContent === "이전" && currentPage > 1) {
+      if (btn.dataset.role === "prev" && currentPage > 1) {
         currentPage--;
         renderPosts();
-      } else if (btn.textContent === "다음" && currentPage < totalPages) {
+      } else if (btn.dataset.role === "next" && currentPage < totalPages) {
         currentPage++;
         renderPosts();
       } else if (!isNaN(parseInt(btn.textContent))) {
@@ -156,7 +201,7 @@ function openWriteModal() {
     if (authorInput) {
       authorInput.value = "";
       authorInput.disabled = false;
-      authorInput.placeholder = "작성자를 입력하세요";
+      authorInput.placeholder = tBoard("authorPlaceholder");
     }
     if (contentInput) contentInput.value = "";
     if (anonymousCheckbox) anonymousCheckbox.checked = false;
@@ -180,10 +225,10 @@ window.toggleAuthorInput = function (type) {
     if (anonymousCheckbox.checked) {
       authorInput.disabled = true;
       authorInput.value = "";
-      authorInput.placeholder = "익명으로 작성됩니다";
+      authorInput.placeholder = tBoard("anonymousPlaceholder");
     } else {
       authorInput.disabled = false;
-      authorInput.placeholder = "작성자를 입력하세요";
+      authorInput.placeholder = tBoard("authorPlaceholder");
     }
   }
 };
@@ -271,10 +316,10 @@ function viewPost(postId) {
     const currentUser = getCurrentUser(); // 현재 사용자 식별자
     if (post.likedBy && post.likedBy.includes(currentUser)) {
       likeBtn.classList.add("liked");
-      likeBtn.textContent = "❤️ 좋아요 취소";
+      likeBtn.textContent = tBoard("unlike");
     } else {
       likeBtn.classList.remove("liked");
-      likeBtn.textContent = "🤍 좋아요";
+      likeBtn.textContent = tBoard("like");
     }
     likeBtn.setAttribute("data-post-id", postId);
   }
@@ -456,7 +501,7 @@ function viewPost(postId) {
 // 댓글 작성
 window.addComment = function () {
   if (!currentViewPostId) {
-    alert("게시글을 먼저 열어주세요.");
+    alert(tBoard("alertOpenPost"));
     return;
   }
 
@@ -470,7 +515,7 @@ window.addComment = function () {
 
   // 익명이 아닐 때만 작성자 필수 체크
   if ((!isAnonymous && !commentAuthor) || !commentContent) {
-    alert("작성자와 댓글 내용을 입력해주세요.");
+    alert(tBoard("alertCommentRequired"));
     return;
   }
 
@@ -479,7 +524,7 @@ window.addComment = function () {
 
   if (post.comments === undefined) post.comments = [];
 
-  const finalAuthor = isAnonymous ? "익명" : commentAuthor;
+  const finalAuthor = isAnonymous ? tBoard("anonymous") : commentAuthor;
 
   const newComment = {
     id: Date.now(),
@@ -501,7 +546,7 @@ window.addComment = function () {
     // 작성자 입력 필드 활성화
     if (commentAuthorInput) {
       commentAuthorInput.disabled = false;
-      commentAuthorInput.placeholder = "작성자를 입력하세요";
+      commentAuthorInput.placeholder = tBoard("authorPlaceholder");
     }
   }
 
@@ -522,6 +567,37 @@ window.closeViewModal = function () {
   const modal = document.getElementById("viewModal");
   if (modal) {
     modal.style.display = "none";
+  }
+};
+
+// 언어 변경 시 동적 UI 업데이트
+window.updateBoardTranslations = function () {
+  // 리스트/페이지네이션 재렌더링
+  renderPosts();
+
+  // 작성자 입력 placeholder 동기화
+  const postAuthorInput = document.getElementById("postAuthor");
+  if (postAuthorInput) {
+    postAuthorInput.placeholder = tBoard("authorPlaceholder");
+  }
+
+  const commentAuthorInput = document.getElementById("commentAuthor");
+  const commentAnonymousCheckbox = document.getElementById("commentAnonymous");
+  if (commentAuthorInput) {
+    const isAnonymous = commentAnonymousCheckbox?.checked;
+    commentAuthorInput.placeholder = isAnonymous
+      ? tBoard("anonymousPlaceholder")
+      : tBoard("authorPlaceholder");
+  }
+
+  // 좋아요 버튼 텍스트 동기화
+  const likeBtn = document.getElementById("likeBtn");
+  if (likeBtn) {
+    if (likeBtn.classList.contains("liked")) {
+      likeBtn.textContent = tBoard("unlike");
+    } else {
+      likeBtn.textContent = tBoard("like");
+    }
   }
 };
 

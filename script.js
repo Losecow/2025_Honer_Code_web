@@ -1,69 +1,412 @@
-// 언어 데이터
-const translations = {
-  ko: {
-    nav: {
-      page1: "Page #1",
-      page2: "Page #2",
-      page3: "Page #3",
-      page4: "Page #4",
-    },
-    hero: {
-      title: "Honer Code",
-      subtitle: "부제",
-    },
-  },
-  en: {
-    nav: {
-      page1: "Page #1",
-      page2: "Page #2",
-      page3: "Page #3",
-      page4: "Page #4",
-    },
-    hero: {
-      title: "Honer Code",
-      subtitle: "Subtitle here",
-    },
-  },
-};
-
-// 현재 언어 상태 (기본값: 한국어)
-let currentLang = "ko";
-
-// 언어 전환 함수
-function changeLanguage(lang) {
-  currentLang = lang;
-  const t = translations[lang];
-
-  // 네비게이션 메뉴 업데이트
-  const navLinks = document.querySelectorAll("nav a");
-  if (navLinks.length >= 4) {
-    navLinks[0].textContent = t.nav.page1;
-    navLinks[1].textContent = t.nav.page2;
-    navLinks[2].textContent = t.nav.page3;
-    navLinks[3].textContent = t.nav.page4;
+// 하드코딩 번역 데이터
+function translateNameLine(el, lang) {
+  const nameField =
+    el.querySelector("#nameField") || el.querySelector(".name-field");
+  if (!el.dataset.originalStructure && el.innerHTML) {
+    el.dataset.originalStructure = el.innerHTML;
+  }
+  if (nameField && !nameField.dataset.originalPlaceholder) {
+    nameField.dataset.originalPlaceholder =
+      nameField.getAttribute("placeholder") || "";
   }
 
-  // 히어로 섹션 업데이트
-  const heroTitle = document.querySelector(".hero h1");
-  const heroSubtitle = document.querySelector(".hero p");
-  if (heroTitle) heroTitle.textContent = t.hero.title;
-  if (heroSubtitle) heroSubtitle.textContent = t.hero.subtitle;
+  if (!nameField) {
+    // fallback: just restore or set simple text
+    if (lang === "ko" && el.dataset.originalStructure) {
+      el.innerHTML = el.dataset.originalStructure;
+    } else {
+      el.textContent = lang === "en" ? "I, ______, hereby" : el.textContent;
+    }
+    return;
+  }
 
-  // HTML lang 속성 업데이트
+  const placeholderKo =
+    nameField.dataset.originalPlaceholder || nameField.getAttribute("placeholder") || "";
+  const placeholderEn = "Name";
+
+  // preserve existing element to keep 이벤트 핸들러
+  nameField.setAttribute("placeholder", lang === "en" ? placeholderEn : placeholderKo);
+
+  // 재배치
+  nameField.remove();
+  el.textContent = "";
+  if (lang === "en") {
+    el.append("I, ");
+    el.appendChild(nameField);
+    el.append(", hereby");
+  } else {
+    el.append("나 ");
+    el.appendChild(nameField);
+    el.append("은(는)");
+  }
+}
+
+function makePrefixTranslator(enText) {
+  return function (el, lang) {
+    if (!el.dataset.originalPrefix) {
+      el.dataset.originalPrefix = el.childNodes[0]?.textContent || el.textContent || "";
+    }
+    const prefix = lang === "en" ? enText : el.dataset.originalPrefix;
+    if (el.firstChild) {
+      el.firstChild.textContent = prefix;
+    } else {
+      el.textContent = prefix;
+    }
+  };
+}
+
+const translationEntries = {
+  common: [
+    { selector: 'nav a[href="page1.html"]', type: "text", en: "Honor Pledge" },
+    { selector: 'nav a[href="page2.html"]', type: "text", en: "Servant Map" },
+    { selector: 'nav a[href="page3.html"]', type: "text", en: "Honor Board" },
+    {
+      selector: 'nav a[href="page4.html"]',
+      type: "text",
+      en: "Honor Level Test",
+    },
+    { selector: ".lang span:first-child", type: "text", en: "KOR" },
+    { selector: ".lang span:last-child", type: "text", en: "ENG" },
+  ],
+  index: [
+    { selector: ".hero h1", type: "text", en: "Honor Code" },
+    {
+      selector: ".hero p",
+      type: "text",
+      en: "Honest and responsible Handong community",
+    },
+    { selector: "#signatureBtn", type: "text", en: "Sign" },
+    {
+      selector: ".verse-text",
+      type: "text",
+      en: '"Do not conform to the pattern of this world, but be transformed by the renewing of your mind. Then you will be able to test and approve what God’s will is—his good, pleasing and perfect will."',
+    },
+    { selector: ".verse-reference", type: "text", en: "[Romans 12:2]" },
+    {
+      selector: ".honor-code-title",
+      type: "text",
+      en: "What is the Honor Code?",
+    },
+    {
+      selector: ".honor-code-text",
+      type: "text",
+      en: "The Honor Code, also known as the Handong Honor System, is a proud culture established voluntarily by Handong members since the university’s founding in 1995. It is a commitment before God, others, and oneself to uphold honesty and responsibility in daily life.",
+    },
+    {
+      selector: ".copyright-notice",
+      type: "text",
+      en: "Some images on this page are captured from YouTube videos, and all copyrights belong to the original creators.",
+    },
+  ],
+  page1: [
+    { selector: ".declaration-header h2", type: "text", en: "Honor Pledge" },
+    {
+      selector: ".declaration-text:nth-of-type(1)",
+      type: "custom",
+      apply: translateNameLine,
+    },
+    {
+      selector: ".declaration-text:nth-of-type(2)",
+      type: "text",
+      en: "as a member of Handong Global University, will uphold honesty and responsibility,",
+    },
+    {
+      selector: ".declaration-text:nth-of-type(3)",
+      type: "text",
+      en: "and practice the spirit of the Honor Code in my daily life.",
+    },
+    {
+      selector: ".declaration-text:nth-of-type(4)",
+      type: "text",
+      en: "I will not engage in cheating, proxy actions, plagiarism, or any behavior that undermines the trust of our community in any academic activity.",
+    },
+    {
+      selector: ".declaration-text:nth-of-type(5)",
+      type: "text",
+      en: "I remember that honest choices keep our community healthy,",
+    },
+    {
+      selector: ".declaration-text:nth-of-type(6)",
+      type: "text",
+      en: "and I will respect the efforts of my peers and choose actions that are not shameful before myself.",
+    },
+    { selector: 'label[for="studentIdInput"]', type: "text", en: "Student ID" },
+    {
+      selector: "#studentIdInput",
+      type: "placeholder",
+      en: "Enter student ID",
+    },
+    { selector: 'label[for="majorInput"]', type: "text", en: "Major" },
+    {
+      selector: "#majorInput",
+      type: "placeholder",
+      en: "Enter your major",
+    },
+    { selector: ".signature-section h3", type: "text", en: "Signature" },
+    { selector: ".clear-btn", type: "text", en: "Clear" },
+    { selector: "#confirmBtn", type: "text", en: "Confirm" },
+    { selector: "#pdfDownloadBtn", type: "text", en: "Download PDF" },
+  ],
+  page2: [
+    { selector: "#locationTitle", type: "text", en: "Location Info" },
+    { selector: ".close-btn-modal", type: "text", en: "Close" },
+    { selector: ".modal-header .close-btn", type: "text", en: "×" },
+  ],
+  page3: [
+    { selector: ".board-header h1", type: "text", en: "Honor Board" },
+    { selector: ".write-btn", type: "text", en: "Write Post" },
+    { selector: '.search-select option[value="title"]', type: "text", en: "Title" },
+    {
+      selector: '.search-select option[value="author"]',
+      type: "text",
+      en: "Author",
+    },
+    {
+      selector: '.search-select option[value="content"]',
+      type: "text",
+      en: "Content",
+    },
+    {
+      selector: ".search-input",
+      type: "placeholder",
+      en: "Enter search keyword",
+    },
+    { selector: ".search-btn", type: "text", en: "Search" },
+    { selector: "#writeModal .modal-header h2", type: "text", en: "Write Post" },
+    { selector: '#writeModal label[for="postTitle"]', type: "text", en: "Title" },
+    {
+      selector: "#postTitle",
+      type: "placeholder",
+      en: "Enter the title",
+    },
+    {
+      selector: '#writeModal label[for="postAuthor"]',
+      type: "text",
+      en: "Author",
+    },
+    {
+      selector: "#postAuthor",
+      type: "placeholder",
+      en: "Enter the author",
+    },
+    { selector: "#writeModal .checkbox-label span", type: "text", en: "Post anonymously" },
+    {
+      selector: '#writeModal label[for="postContent"]',
+      type: "text",
+      en: "Content",
+    },
+    {
+      selector: "#postContent",
+      type: "placeholder",
+      en: "Enter the content",
+    },
+    { selector: "#writeModal .cancel-btn", type: "text", en: "Cancel" },
+    { selector: "#writeModal .submit-btn", type: "text", en: "Submit" },
+    {
+      selector: "#viewModal .post-info span:nth-child(1)",
+      type: "custom",
+      apply: makePrefixTranslator("Author: "),
+    },
+    {
+      selector: "#viewModal .post-info span:nth-child(2)",
+      type: "custom",
+      apply: makePrefixTranslator("Date: "),
+    },
+    {
+      selector: "#viewModal .post-info span:nth-child(3)",
+      type: "custom",
+      apply: makePrefixTranslator("Views: "),
+    },
+    {
+      selector: "#viewModal .post-info span:nth-child(4)",
+      type: "custom",
+      apply: makePrefixTranslator("Likes: "),
+    },
+    { selector: "#likeBtn", type: "text", en: "🤍 Like" },
+    {
+      selector: ".comments-title",
+      type: "custom",
+      apply: makePrefixTranslator("Comments ("),
+    },
+    {
+      selector: '#viewModal label[for="commentAuthor"]',
+      type: "text",
+      en: "Author",
+    },
+    {
+      selector: "#commentAuthor",
+      type: "placeholder",
+      en: "Enter the author",
+    },
+    {
+      selector: "#viewModal .checkbox-label span",
+      type: "text",
+      en: "Post anonymously",
+    },
+    {
+      selector: '#viewModal label[for="commentContent"]',
+      type: "text",
+      en: "Comment",
+    },
+    {
+      selector: "#commentContent",
+      type: "placeholder",
+      en: "Enter a comment",
+    },
+    { selector: "#commentSubmitBtn", type: "text", en: "Submit Comment" },
+    { selector: "#viewModal .close-btn-modal", type: "text", en: "Close" },
+  ],
+  page4: [
+    { selector: ".quiz-title", type: "text", en: "Honor Level Test" },
+    {
+      selector: ".quiz-subtitle",
+      type: "html",
+      en: "How high is your honor level?<br />Check your integrity with the Honor Level Test!",
+    },
+    {
+      selector: ".info-item:nth-child(1) .info-text",
+      type: "text",
+      en: "The Honor Code is not just a rule—it is a culture built on small daily choices that show our integrity.",
+    },
+    {
+      selector: ".info-item:nth-child(2) .info-text",
+      type: "text",
+      en: "This test examines your choices in real-life situations like dorms, exams, money, chapel, and study rooms.",
+    },
+    {
+      selector: ".info-item:nth-child(3) .info-text",
+      type: "text",
+      en: "Results include personalized advice and practical guides you can apply right away.",
+    },
+    { selector: ".quiz-start-btn", type: "text", en: "Start" },
+    { selector: "#quizResult .quiz-title", type: "text", en: "Result" },
+    { selector: "#quizResult h3:nth-of-type(1)", type: "text", en: "Traits" },
+    { selector: "#quizResult h3:nth-of-type(2)", type: "text", en: "Advice" },
+    { selector: "#quizResult .quiz-start-btn", type: "text", en: "Restart" },
+  ],
+};
+
+let currentLang = "ko";
+
+function getPageKey() {
+  const path = window.location.pathname;
+  if (path.includes("page1")) return "page1";
+  if (path.includes("page2")) return "page2";
+  if (path.includes("page3")) return "page3";
+  if (path.includes("page4")) return "page4";
+  return "index";
+}
+
+function storeOriginal(el, type) {
+  const keyMap = {
+    text: "originalText",
+    html: "originalHtml",
+    placeholder: "originalPlaceholder",
+    value: "originalValue",
+  };
+  const dataKey = keyMap[type] || "originalText";
+  if (el.dataset[dataKey]) return;
+
+  switch (type) {
+    case "html":
+      el.dataset[dataKey] = el.innerHTML;
+      break;
+    case "placeholder":
+      el.dataset[dataKey] = el.getAttribute("placeholder") || "";
+      break;
+    case "value":
+      el.dataset[dataKey] = el.value || "";
+      break;
+    default:
+      el.dataset[dataKey] = el.textContent;
+  }
+}
+
+function restoreOriginal(el, type) {
+  const keyMap = {
+    text: "originalText",
+    html: "originalHtml",
+    placeholder: "originalPlaceholder",
+    value: "originalValue",
+  };
+  const dataKey = keyMap[type] || "originalText";
+  if (!el.dataset[dataKey]) return;
+
+  switch (type) {
+    case "html":
+      el.innerHTML = el.dataset[dataKey];
+      break;
+    case "placeholder":
+      el.setAttribute("placeholder", el.dataset[dataKey]);
+      break;
+    case "value":
+      el.value = el.dataset[dataKey];
+      break;
+    default:
+      el.textContent = el.dataset[dataKey];
+  }
+}
+
+function applyTranslations(lang) {
+  const pageKey = getPageKey();
+  const targets = [
+    ...(translationEntries.common || []),
+    ...(translationEntries[pageKey] || []),
+  ];
+
+  targets.forEach((entry) => {
+    const type = entry.type || "text";
+    const nodes = document.querySelectorAll(entry.selector);
+    nodes.forEach((el) => {
+      if (typeof entry.apply === "function") {
+        entry.apply(el, lang);
+        return;
+      }
+      storeOriginal(el, type);
+      if (lang === "ko") {
+        restoreOriginal(el, type);
+        return;
+      }
+      const value = entry.en;
+      if (value === undefined) return;
+      if (type === "html") {
+        el.innerHTML = value;
+      } else if (type === "placeholder") {
+        el.setAttribute("placeholder", value);
+      } else if (type === "value") {
+        el.value = value;
+      } else {
+        el.textContent = value;
+      }
+    });
+  });
+}
+
+function changeLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("preferredLanguage", lang);
+
+  if (lang === "ko") {
+    applyTranslations("ko");
+  } else {
+    applyTranslations("en");
+  }
+
+  if (typeof updateMapTranslations === "function") {
+    updateMapTranslations(lang);
+  }
+  if (typeof updateQuizTranslations === "function") {
+    updateQuizTranslations(lang);
+  }
+
   document.documentElement.lang = lang;
-
-  // 활성 언어 표시 업데이트
   updateLangDisplay();
 }
 
-// 언어 표시 업데이트
 function updateLangDisplay() {
   const langSpans = document.querySelectorAll(".lang span");
+  langSpans.forEach((span) => span.classList.remove("active"));
   if (langSpans.length >= 2) {
-    // 모든 span에서 active 클래스 제거
-    langSpans.forEach((span) => span.classList.remove("active"));
-
-    // 현재 언어에 active 클래스 추가
     if (currentLang === "ko") {
       langSpans[0].classList.add("active");
     } else {
@@ -72,15 +415,15 @@ function updateLangDisplay() {
   }
 }
 
-// 페이지 로드 시 초기화
 document.addEventListener("DOMContentLoaded", function () {
-  // 언어 전환 버튼에 이벤트 리스너 추가
   const langSpans = document.querySelectorAll(".lang span");
   if (langSpans.length >= 2) {
     langSpans[0].addEventListener("click", () => changeLanguage("ko"));
     langSpans[1].addEventListener("click", () => changeLanguage("en"));
   }
 
-  // 초기 언어 표시 설정
+  const savedLang = localStorage.getItem("preferredLanguage") || "ko";
+  currentLang = savedLang;
+  changeLanguage(savedLang);
   updateLangDisplay();
 });

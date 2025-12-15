@@ -1,7 +1,6 @@
 // 퀴즈 데이터 및 로직
 
-// 퀴즈 질문 데이터
-const quizQuestions = [
+const originalQuizQuestions = [
   {
     question: "기숙사 휴게실 쓰레기통이 넘치려고 한다! 이 때 당신의 행동은?",
     answers: [
@@ -47,8 +46,55 @@ const quizQuestions = [
   },
 ];
 
-// 결과 데이터
-const quizResults = {
+const englishQuizQuestions = [
+  {
+    question:
+      "The dorm lounge trash bin is about to overflow! What do you do?",
+    answers: [
+      "Someone else will handle it—keep pushing trash in and look away.",
+      "I don’t mind dirty hands if it helps others. I empty the trash myself.",
+    ],
+    scores: { typeA: 0, typeB: 1 },
+  },
+  {
+    question:
+      "During an unproctored exam, you see someone using ChatGPT to cheat. What do you do?",
+    answers: [
+      "It’s unproctored anyway—if they cheat, I will too. Launch ChatGPT.",
+      "I won’t break the Honor Code I promised. I take the exam honestly.",
+    ],
+    scores: { typeA: 0, typeB: 1 },
+  },
+  {
+    question:
+      "You find a 10,000 KRW bill in front of the store. What do you do?",
+    answers: [
+      "Free money! I look around and take it when no one is watching.",
+      "It’s someone’s money. I post on the community board to find the owner.",
+    ],
+    scores: { typeA: 0, typeB: 1 },
+  },
+  {
+    question:
+      "It’s week 16. You already have 2 chapel absences; one more is an F. What do you do?",
+    answers: [
+      "Share my SmartCampus ID/password with a friend and ask for proxy attendance.",
+      "Proxy attendance is not okay. I go to chapel and then study.",
+    ],
+    scores: { typeA: 0, typeB: 1 },
+  },
+  {
+    question:
+      "During exam season, you need to leave the reading room for a while and don’t know when you’ll return. What do you do?",
+    answers: [
+      "Seats are scarce, and I’ll be back soon—leave my stuff to reserve the seat.",
+      "Many want seats. If I leave, I clear my belongings so others can use it.",
+    ],
+    scores: { typeA: 0, typeB: 1 },
+  },
+];
+
+const originalQuizResults = {
   typeA: {
     type: "양심형",
     description: "당신은 아너코드를 실천하는 양심적인 사람입니다.",
@@ -73,6 +119,35 @@ const quizResults = {
   },
 };
 
+const englishQuizResults = {
+  typeA: {
+    type: "Integrity Type",
+    description: "You practice the Honor Code with integrity.",
+    features: [
+      "You strive to keep the principles you promised",
+      "You value consideration and trust for others",
+      "You remain honest even in difficult situations",
+    ],
+    advice:
+      "Your integrity positively influences those around you. It can be hard at times, but keep practicing the Honor Code—your actions make the world better.",
+  },
+  typeB: {
+    type: "Needs Growth",
+    description:
+      "You still have room to grow in practicing the Honor Code.",
+    features: [
+      "You tend to choose convenience",
+      "You flex principles depending on situations",
+      "You often prioritize personal benefit over others",
+    ],
+    advice:
+      "Perfectly practicing the Honor Code is difficult. Start small: empty the trash, take tests honestly, return lost items. Growth comes through these steps.",
+  },
+};
+
+let quizQuestions = JSON.parse(JSON.stringify(originalQuizQuestions));
+let quizResults = JSON.parse(JSON.stringify(originalQuizResults));
+
 // 퀴즈 상태
 let currentQuestionIndex = 0;
 let userAnswers = [];
@@ -80,16 +155,21 @@ let totalScore = 0;
 
 // 퀴즈 시작
 function startQuiz() {
+  const intro = document.getElementById("quizIntro");
+  const questions = document.getElementById("quizQuestions");
+  const result = document.getElementById("quizResult");
+  if (!intro || !questions || !result) return;
+
   currentQuestionIndex = 0;
   userAnswers = [];
   totalScore = 0;
 
   // 소개 페이지 숨기기
-  document.getElementById("quizIntro").style.display = "none";
+  intro.style.display = "none";
   // 퀴즈 페이지 보이기
-  document.getElementById("quizQuestions").style.display = "block";
+  questions.style.display = "block";
   // 결과 페이지 숨기기
-  document.getElementById("quizResult").style.display = "none";
+  result.style.display = "none";
 
   // 첫 번째 질문 표시
   displayQuestion();
@@ -100,21 +180,40 @@ function displayQuestion() {
   const question = quizQuestions[currentQuestionIndex];
   const totalQuestions = quizQuestions.length;
 
+  const currentEl = document.getElementById("currentQuestion");
+  const totalEl = document.getElementById("totalQuestions");
+  const questionEl = document.getElementById("questionText");
+  const answerText1 = document.getElementById("answerText1");
+  const answerText2 = document.getElementById("answerText2");
+  const ansBtn1 = document.getElementById("answer1");
+  const ansBtn2 = document.getElementById("answer2");
+  if (
+    !question ||
+    !currentEl ||
+    !totalEl ||
+    !questionEl ||
+    !answerText1 ||
+    !answerText2 ||
+    !ansBtn1 ||
+    !ansBtn2
+  ) {
+    return;
+  }
+
   // 진행률 업데이트
-  document.getElementById("currentQuestion").textContent =
-    currentQuestionIndex + 1;
-  document.getElementById("totalQuestions").textContent = totalQuestions;
+  currentEl.textContent = currentQuestionIndex + 1;
+  totalEl.textContent = totalQuestions;
 
   // 질문 텍스트
-  document.getElementById("questionText").textContent = question.question;
+  questionEl.textContent = question.question;
 
   // 답안 옵션
-  document.getElementById("answerText1").textContent = question.answers[0];
-  document.getElementById("answerText2").textContent = question.answers[1];
+  answerText1.textContent = question.answers[0];
+  answerText2.textContent = question.answers[1];
 
   // 버튼 초기화
-  document.getElementById("answer1").classList.remove("selected");
-  document.getElementById("answer2").classList.remove("selected");
+  ansBtn1.classList.remove("selected");
+  ansBtn2.classList.remove("selected");
 }
 
 // 답안 선택
@@ -191,10 +290,46 @@ function restartQuiz() {
   startQuiz();
 }
 
+// 글로벌 바인딩 (onclick 속성 대비)
+window.startQuiz = startQuiz;
+window.selectAnswer = selectAnswer;
+window.restartQuiz = restartQuiz;
+window.updateQuizTranslations = updateQuizTranslations;
+
+function updateQuizTranslations(lang) {
+  if (lang === "en") {
+    quizQuestions = JSON.parse(JSON.stringify(englishQuizQuestions));
+    quizResults = JSON.parse(JSON.stringify(englishQuizResults));
+  } else {
+    quizQuestions = JSON.parse(JSON.stringify(originalQuizQuestions));
+    quizResults = JSON.parse(JSON.stringify(originalQuizResults));
+  }
+
+  const questionSection = document.getElementById("quizQuestions");
+  const resultSection = document.getElementById("quizResult");
+  if (questionSection && questionSection.style.display === "block") {
+    displayQuestion();
+  }
+  if (resultSection && resultSection.style.display === "block") {
+    showResult();
+  }
+}
+
 // 페이지 로드 시 초기화
 document.addEventListener("DOMContentLoaded", function () {
   // 초기 상태 설정
   document.getElementById("quizIntro").style.display = "block";
   document.getElementById("quizQuestions").style.display = "none";
   document.getElementById("quizResult").style.display = "none";
+
+  const savedLang = localStorage.getItem("preferredLanguage") || "ko";
+  updateQuizTranslations(savedLang);
+
+  // 버튼 안전 바인딩 (onclick이 동작하지 않을 때 대비)
+  const introStartBtn = document.querySelector(
+    "#quizIntro .quiz-start-btn"
+  );
+  if (introStartBtn) {
+    introStartBtn.addEventListener("click", startQuiz);
+  }
 });

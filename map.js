@@ -1,60 +1,121 @@
 // 지도 장소 정보 기능
 
-// 장소 데이터
-const locations = {
-  1: {
-    name: "학관 쓰레기통",
-    service:
-      "• 올바른 분리수거 실천하기<br>• 쓰레기통 주변 정리 및 청소하기<br>• 넘친 쓰레기 정리하기<br>• 환경 보호 캠페인 참여하기",
-    description:
-      "학관 근처에 위치한 쓰레기통입니다. 캠퍼스 환경을 깨끗하게 유지하기 위해 올바른 분리수거와 쓰레기 배출이 이루어지는 공간입니다.",
-    image: "사진/장소1.jpeg",
+const locationTranslations = {
+  ko: {
+    serviceTitle: "이곳에서 할 수 있는 섬김",
+    locations: {
+      1: {
+        name: "학관 쓰레기통",
+        service:
+          "• 올바른 분리수거 실천하기<br>• 쓰레기통 주변 정리 및 청소하기<br>• 넘친 쓰레기 정리하기<br>• 환경 보호 캠페인 참여하기",
+        description:
+          "학관 근처에 위치한 쓰레기통입니다. 캠퍼스 환경을 깨끗하게 유지하기 위해 올바른 분리수거와 쓰레기 배출이 이루어지는 공간입니다.",
+        image: "사진/장소1.jpeg",
+      },
+      2: {
+        name: "바베큐장",
+        service:
+          "• 사용 후 그릴과 시설 청소하기<br>• 쓰레기 정리 및 분리수거하기<br>• 식사 준비와 정리를 함께 나누기<br>• 다음 이용자를 위한 공간 정돈하기",
+        description:
+          "학생들이 함께 모여 식사를 나누고 교제할 수 있는 바베큐 시설입니다. 다양한 모임과 행사에서 활용되는 공간으로, 공동체의 화합을 도모하는 장소입니다.",
+        images: ["사진/장소2.jpeg", "사진/장소2_1.jpeg"],
+      },
+      3: {
+        name: "농구장",
+        service:
+          "• 사용 후 코트와 주변 정리하기<br>• 농구 장비 정리 및 관리하기<br>• 시설 청소 및 환경 정돈하기<br>• 다른 이용자들을 위한 공간 준비하기",
+        description:
+          "학생들이 농구를 즐길 수 있는 운동 시설입니다. 건강한 신체 활동과 여가 시간을 보낼 수 있는 공간으로, 학생들의 건강한 생활을 지원합니다.",
+        image: "사진/장소3.jpeg",
+      },
+      4: {
+        name: "농구장&풋살장 전원분배함",
+        service:
+          "• 전원분배함 주변 정리 및 청소하기<br>• 이상 징후 발견 시 신고하기<br>• 시설 보호 및 관리에 관심 갖기<br>• 안전한 전기 사용 실천하기",
+        description:
+          "농구장과 풋살장에 전력을 공급하는 전원분배함 시설입니다. 운동 시설의 안전한 전기 공급을 담당하며, 학생들이 안심하고 운동할 수 있도록 지원하는 중요한 인프라입니다.",
+        image: "사진/장소4.jpeg",
+      },
+      5: {
+        name: "오석관",
+        service:
+          "• 강의실과 복도 정리 및 청소하기<br>• 학습 공간 환경 정돈하기<br>• 쓰레기 분리수거 실천하기<br>• 조용한 학습 환경 유지하기",
+        description:
+          "한동대학교의 주요 건물 중 하나인 오석관입니다. 강의실, 연구실, 사무실 등이 위치한 건물로, 학생들의 학습과 연구 활동이 이루어지는 핵심 공간입니다.",
+        image: "사진/장소5.jpeg",
+      },
+      6: {
+        name: "느혜미야 주차장",
+        service:
+          "• 주차 공간 정리 및 청소하기<br>• 올바른 주차 질서 지키기<br>• 쓰레기 정리 및 환경 정돈하기<br>• 다른 이용자들을 위한 공간 배려하기",
+        description:
+          "느혜미야 건물 인근에 위치한 주차장 시설입니다. 학생과 교직원들의 편리한 주차를 위한 공간으로, 캠퍼스 내 교통 흐름을 원활하게 하는 중요한 인프라입니다.",
+        image: "사진/장소6.jpeg",
+      },
+    },
   },
-  2: {
-    name: "바베큐장",
-    service:
-      "• 사용 후 그릴과 시설 청소하기<br>• 쓰레기 정리 및 분리수거하기<br>• 식사 준비와 정리를 함께 나누기<br>• 다음 이용자를 위한 공간 정돈하기",
-    description:
-      "학생들이 함께 모여 식사를 나누고 교제할 수 있는 바베큐 시설입니다. 다양한 모임과 행사에서 활용되는 공간으로, 공동체의 화합을 도모하는 장소입니다.",
-    images: ["사진/장소2.jpeg", "사진/장소2_1.jpeg"],
-  },
-  3: {
-    name: "농구장",
-    service:
-      "• 사용 후 코트와 주변 정리하기<br>• 농구 장비 정리 및 관리하기<br>• 시설 청소 및 환경 정돈하기<br>• 다른 이용자들을 위한 공간 준비하기",
-    description:
-      "학생들이 농구를 즐길 수 있는 운동 시설입니다. 건강한 신체 활동과 여가 시간을 보낼 수 있는 공간으로, 학생들의 건강한 생활을 지원합니다.",
-    image: "사진/장소3.jpeg",
-  },
-  4: {
-    name: "농구장&풋살장 전원분배함",
-    service:
-      "• 전원분배함 주변 정리 및 청소하기<br>• 이상 징후 발견 시 신고하기<br>• 시설 보호 및 관리에 관심 갖기<br>• 안전한 전기 사용 실천하기",
-    description:
-      "농구장과 풋살장에 전력을 공급하는 전원분배함 시설입니다. 운동 시설의 안전한 전기 공급을 담당하며, 학생들이 안심하고 운동할 수 있도록 지원하는 중요한 인프라입니다.",
-    image: "사진/장소4.jpeg",
-  },
-  5: {
-    name: "오석관",
-    service:
-      "• 강의실과 복도 정리 및 청소하기<br>• 학습 공간 환경 정돈하기<br>• 쓰레기 분리수거 실천하기<br>• 조용한 학습 환경 유지하기",
-    description:
-      "한동대학교의 주요 건물 중 하나인 오석관입니다. 강의실, 연구실, 사무실 등이 위치한 건물로, 학생들의 학습과 연구 활동이 이루어지는 핵심 공간입니다.",
-    image: "사진/장소5.jpeg",
-  },
-  6: {
-    name: "느혜미야 주차장",
-    service:
-      "• 주차 공간 정리 및 청소하기<br>• 올바른 주차 질서 지키기<br>• 쓰레기 정리 및 환경 정돈하기<br>• 다른 이용자들을 위한 공간 배려하기",
-    description:
-      "느혜미야 건물 인근에 위치한 주차장 시설입니다. 학생과 교직원들의 편리한 주차를 위한 공간으로, 캠퍼스 내 교통 흐름을 원활하게 하는 중요한 인프라입니다.",
-    image: "사진/장소6.jpeg",
+  en: {
+    serviceTitle: "Ways to Serve Here",
+    locations: {
+      1: {
+        name: "Student Hall Trash Bins",
+        service:
+          "• Practice proper recycling<br>• Tidy and clean around the bins<br>• Clear any overflowing trash<br>• Join environmental protection efforts",
+        description:
+          "Trash bins near the student hall. A place to keep the campus clean through correct waste sorting and disposal.",
+        image: "사진/장소1.jpeg",
+      },
+      2: {
+        name: "BBQ Area",
+        service:
+          "• Clean grills and facilities after use<br>• Sort and dispose of trash properly<br>• Share meal prep and cleanup together<br>• Leave the space ready for the next users",
+        description:
+          "A barbecue facility where students gather to share meals and fellowship. A space that fosters community through various events and gatherings.",
+        images: ["사진/장소2.jpeg", "사진/장소2_1.jpeg"],
+      },
+      3: {
+        name: "Basketball Court",
+        service:
+          "• Clean the court and surroundings after use<br>• Organize and care for basketball equipment<br>• Keep the facility tidy<br>• Prepare the space considerately for others",
+        description:
+          "An athletic facility where students enjoy basketball. A space that supports healthy activity and leisure for students.",
+        image: "사진/장소3.jpeg",
+      },
+      4: {
+        name: "Basketball & Futsal Power Box",
+        service:
+          "• Keep the power box area clean<br>• Report any abnormal signs<br>• Care for and protect the facility<br>• Practice safe electricity use",
+        description:
+          "The power distribution box supplying electricity to the basketball and futsal courts. It supports safe power so students can enjoy sports with peace of mind.",
+        image: "사진/장소4.jpeg",
+      },
+      5: {
+        name: "Oseok Hall",
+        service:
+          "• Clean and organize classrooms and hallways<br>• Keep study spaces tidy<br>• Practice waste sorting<br>• Maintain a quiet learning environment",
+        description:
+          "One of Handong’s main buildings, housing classrooms, labs, and offices. A core space for students’ learning and research activities.",
+        image: "사진/장소5.jpeg",
+      },
+      6: {
+        name: "Nehemiah Parking Lot",
+        service:
+          "• Clean and organize the parking area<br>• Follow proper parking order<br>• Keep the environment tidy and litter-free<br>• Be considerate to other users",
+        description:
+          "A parking facility near Nehemiah building. It supports convenient parking for students and staff and smooth traffic flow on campus.",
+        image: "사진/장소6.jpeg",
+      },
+    },
   },
 };
 
+let currentMapLang = localStorage.getItem("preferredLanguage") || "ko";
+
 // 장소 모달 열기
 function openLocationModal(locationId) {
-  const location = locations[locationId];
+  const lang = currentMapLang || "ko";
+  const langPack = locationTranslations[lang] || locationTranslations.ko;
+  const location = langPack.locations[locationId];
   if (!location) return;
 
   const modal = document.getElementById("locationModal");
@@ -111,7 +172,7 @@ function openLocationModal(locationId) {
     ${imageHtml}
     <div class="location-info">
       <div class="location-service">
-        <h3 class="service-title">이곳에서 할 수 있는 섬김</h3>
+        <h3 class="service-title">${langPack.serviceTitle}</h3>
         <div class="service-content">${location.service}</div>
       </div>
       <p class="location-description">${location.description}</p>
@@ -125,6 +186,7 @@ function openLocationModal(locationId) {
     modal.setAttribute("data-total-slides", location.images.length.toString());
   }
 
+  modal.setAttribute("data-location", locationId.toString());
   modal.style.display = "flex";
 }
 
@@ -259,6 +321,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
+function updateMapTranslations(lang) {
+  currentMapLang = lang || "ko";
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem("preferredLanguage", currentMapLang);
+  }
+
+  const modal = document.getElementById("locationModal");
+  if (modal && modal.style.display === "flex") {
+    const currentLocationId = parseInt(modal.getAttribute("data-location"), 10);
+    if (currentLocationId) {
+      openLocationModal(currentLocationId);
+    }
+  }
+}
+
+window.updateMapTranslations = updateMapTranslations;
 
 // 반응형 버튼 위치 조정 (퍼센트 기반)
 function adjustButtonPositions() {

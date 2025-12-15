@@ -21,11 +21,16 @@ function translateNameLine(el, lang) {
   }
 
   const placeholderKo =
-    nameField.dataset.originalPlaceholder || nameField.getAttribute("placeholder") || "";
+    nameField.dataset.originalPlaceholder ||
+    nameField.getAttribute("placeholder") ||
+    "";
   const placeholderEn = "Name";
 
   // preserve existing element to keep 이벤트 핸들러
-  nameField.setAttribute("placeholder", lang === "en" ? placeholderEn : placeholderKo);
+  nameField.setAttribute(
+    "placeholder",
+    lang === "en" ? placeholderEn : placeholderKo
+  );
 
   // 재배치
   nameField.remove();
@@ -44,7 +49,8 @@ function translateNameLine(el, lang) {
 function makePrefixTranslator(enText) {
   return function (el, lang) {
     if (!el.dataset.originalPrefix) {
-      el.dataset.originalPrefix = el.childNodes[0]?.textContent || el.textContent || "";
+      el.dataset.originalPrefix =
+        el.childNodes[0]?.textContent || el.textContent || "";
     }
     const prefix = lang === "en" ? enText : el.dataset.originalPrefix;
     if (el.firstChild) {
@@ -155,7 +161,11 @@ const translationEntries = {
   page3: [
     { selector: ".board-header h1", type: "text", en: "Honor Board" },
     { selector: ".write-btn", type: "text", en: "Write Post" },
-    { selector: '.search-select option[value="title"]', type: "text", en: "Title" },
+    {
+      selector: '.search-select option[value="title"]',
+      type: "text",
+      en: "Title",
+    },
     {
       selector: '.search-select option[value="author"]',
       type: "text",
@@ -172,8 +182,16 @@ const translationEntries = {
       en: "Enter search keyword",
     },
     { selector: ".search-btn", type: "text", en: "Search" },
-    { selector: "#writeModal .modal-header h2", type: "text", en: "Write Post" },
-    { selector: '#writeModal label[for="postTitle"]', type: "text", en: "Title" },
+    {
+      selector: "#writeModal .modal-header h2",
+      type: "text",
+      en: "Write Post",
+    },
+    {
+      selector: '#writeModal label[for="postTitle"]',
+      type: "text",
+      en: "Title",
+    },
     {
       selector: "#postTitle",
       type: "placeholder",
@@ -189,7 +207,11 @@ const translationEntries = {
       type: "placeholder",
       en: "Enter the author",
     },
-    { selector: "#writeModal .checkbox-label span", type: "text", en: "Post anonymously" },
+    {
+      selector: "#writeModal .checkbox-label span",
+      type: "text",
+      en: "Post anonymously",
+    },
     {
       selector: '#writeModal label[for="postContent"]',
       type: "text",
@@ -289,15 +311,31 @@ const translationEntries = {
 let currentLang = "ko";
 
 const navTextMap = {
-  'a[href="page1.html"]': { ko: "명예서약서", en: "Honor Pledge" },
-  'a[href="page2.html"]': { ko: "섬김이 지도", en: "Servant Map" },
-  'a[href="page3.html"]': { ko: "명예 게시판", en: "Honor Board" },
-  'a[href="page4.html"]': { ko: "아너 레벨 테스트", en: "Honor Level Test" },
+  "page1.html": { ko: "명예서약서", en: "Honor Pledge" },
+  "page2.html": { ko: "섬김이 지도", en: "Servant Map" },
+  "page3.html": { ko: "명예 게시판", en: "Honor Board" },
+  "page4.html": { ko: "아너 레벨 테스트", en: "Honor Level Test" },
+  // Netlify에서 /page1.html 식으로 변형될 수 있으므로 basename 기준으로 매칭
 };
 
+function normalizeHref(href) {
+  if (!href) return "";
+  try {
+    const u = new URL(href, window.location.href);
+    const parts = u.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
+  } catch (e) {
+    return href.replace(/^\.?\//, "");
+  }
+}
+
 function applyNavTexts(lang) {
-  Object.entries(navTextMap).forEach(([selector, textObj]) => {
-    document.querySelectorAll(selector).forEach((el) => {
+  // 방법 1: href로 찾기
+  const navLinks = Array.from(document.querySelectorAll("nav a"));
+  navLinks.forEach((el) => {
+    const href = normalizeHref(el.getAttribute("href"));
+    const textObj = navTextMap[href];
+    if (textObj) {
       if (!el.dataset.originalText) {
         el.dataset.originalText = el.textContent.trim();
       }
@@ -306,8 +344,47 @@ function applyNavTexts(lang) {
       } else {
         el.textContent = el.dataset.originalText || textObj.ko;
       }
-    });
+      return;
+    }
   });
+
+  // 방법 2: 텍스트로 직접 찾기 (href 매칭 실패 시)
+  navLinks.forEach((el) => {
+    const currentText = el.textContent.trim();
+    for (const [key, textObj] of Object.entries(navTextMap)) {
+      if (currentText === textObj.ko || currentText === textObj.en) {
+        if (!el.dataset.originalText) {
+          el.dataset.originalText = textObj.ko;
+        }
+        if (lang === "en") {
+          el.textContent = textObj.en;
+        } else {
+          el.textContent = el.dataset.originalText || textObj.ko;
+        }
+        break;
+      }
+    }
+  });
+
+  // 방법 3: 순서대로 매칭 (마지막 수단)
+  const navLinksOrdered = Array.from(document.querySelectorAll("nav a"));
+  const navKeys = ["page1.html", "page2.html", "page3.html", "page4.html"];
+  navLinksOrdered.forEach((el, index) => {
+    if (index < navKeys.length) {
+      const textObj = navTextMap[navKeys[index]];
+      if (textObj) {
+        if (!el.dataset.originalText) {
+          el.dataset.originalText = el.textContent.trim() || textObj.ko;
+        }
+        if (lang === "en") {
+          el.textContent = textObj.en;
+        } else {
+          el.textContent = el.dataset.originalText || textObj.ko;
+        }
+      }
+    }
+  });
+
   const langSpans = document.querySelectorAll(".lang span");
   if (langSpans.length >= 2) {
     langSpans[0].textContent = "KOR";
@@ -418,7 +495,11 @@ function changeLanguage(lang) {
   } else {
     applyTranslations("en");
   }
+
+  // 네비게이션 텍스트 적용 (즉시 + 지연 후 재시도)
   applyNavTexts(lang);
+  setTimeout(() => applyNavTexts(lang), 100);
+  setTimeout(() => applyNavTexts(lang), 500);
 
   if (typeof updateMapTranslations === "function") {
     updateMapTranslations(lang);
@@ -457,4 +538,14 @@ document.addEventListener("DOMContentLoaded", function () {
   currentLang = savedLang;
   changeLanguage(savedLang);
   updateLangDisplay();
+
+  // DOMContentLoaded 후에도 한 번 더 확인
+  setTimeout(() => applyNavTexts(currentLang), 200);
+});
+
+// window.load 이벤트에서도 한 번 더 확인 (모든 리소스 로드 완료 후)
+window.addEventListener("load", function () {
+  if (currentLang) {
+    setTimeout(() => applyNavTexts(currentLang), 100);
+  }
 });

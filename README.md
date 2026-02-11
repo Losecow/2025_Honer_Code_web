@@ -26,91 +26,62 @@
 - **형태**: HTML/CSS/JavaScript만 사용(프레임워크 없이 구현), 페이지 간 공통 UI/UX 유지
 - **핵심 특징**: 반응형 UI + 한/영 다국어 + LocalStorage 기반 데이터 유지
 
----
-
-## 주요 기능 및 화면 구성
+## 주요 기능
 
 ### 1. 메인 페이지 (서약식 연혁)
 2008년부터 2025년까지의 서약식 사진 슬라이더를 통해 아너코드의 역사를 볼 수 있습니다.
 
-<p align="center">
-  <img src="메인페이지.png" width="48%" alt="메인페이지1" />
-  <img src="메인페이지2.png" width="48%" alt="메인페이지2" />
-</p>
+![메인 페이지](images/screenshots/main_page_1.png)
+![메인 페이지 슬라이더](images/screenshots/main_page_2.png)
+![2025년 서약식](images/pledge_2025.jpg)
 
-- **주요 기능**:
-  - 2008~2025 서약식 사진 슬라이더 (자동 재생/도트 이동)
-  - 정직 지수 온도계 컴포넌트 (참여형, 로컬 저장)
-  - 서약 완료 시 내 서명이 메인 화면에 시각화됨
+- 2008~2025 서약식 사진 슬라이더(자동 재생/도트 이동)
+- 정직 지수 온도계 컴포넌트(로컬 저장)
+- 이미지 파일명 인코딩 처리로 배포 환경 호환성 개선
 
-### 2. 명예서약서 (정직 선언문)
-아너코드 서약에 직접 참여하고, 나만의 서약서를 PDF로 소장할 수 있습니다.
-
-<p align="center">
-  <img src="서약서페이지.png" width="48%" alt="서약서페이지1" />
-  <img src="서약서페이지2.png" width="48%" alt="서약서페이지2" />
-</p>
-
-- **주요 기능**:
-  - **Canvas 기반 전자 서명**: 마우스/터치 모두 지원
-  - **PDF 다운로드**: 입력 정보(이름/학번/전공) + 서명을 이미지화하여 저장 (`html2canvas`, `jsPDF`)
-  - 서명 유효성 검사 (빈 서명 방지)
-
-### 3. 섬김이 지도
+### 2. 섬김이 지도
 학교 지도 위에서 다양한 섬김 활동 장소를 확인하고 정보를 얻을 수 있습니다.
 
-<p align="center">
-  <img src="섬김이지도페이지.png" width="80%" alt="섬김이 지도 전체" />
+![섬김이 지도 페이지](images/screenshots/map_page.png)
+![캠퍼스 지도](images/hgu_map.png)
+
+- **지도 이미지 위 퍼센트 좌표 기반 버튼 배치**(반응형에서도 위치 안정)
+- 장소별 모달 + 다중 이미지 슬라이더 + 섬김 활동 안내(한/영)
+
+#### 지도 상세 및 활동 장소
+![지도 상세 모달 1](images/screenshots/map_detail_1.png)
+![지도 상세 모달 2](images/screenshots/map_detail_2.png)
+
+<p float="left">
+  <img src="images/places/place_1.jpeg" width="30%" />
+  <img src="images/places/place_2.jpeg" width="30%" />
+  <img src="images/places/place_3.jpeg" width="30%" />
+  <img src="images/places/place_4.jpeg" width="30%" />
+  <img src="images/places/place_5.jpeg" width="30%" />
+  <img src="images/places/place_6.jpeg" width="30%" />
 </p>
 
-- **주요 기능**:
-  - **반응형 지도**: 지도 이미지 위 퍼센트(%) 좌표 기반 버튼 배치로 화면 크기가 변해도 위치 유지
-  - **장소별 상세 모달**: 클릭 시 해당 장소의 사진 슬라이더와 활동 안내(한/영) 표시
+### 3. 명예서약서 (정직 선언문)
+- **Canvas 기반 전자 서명**(마우스/터치 모두 지원)
+- 입력 정보(이름/학번/전공) + 서명을 **PDF로 다운로드**(`html2canvas`, `jsPDF`)
+- 서약 완료 시 서명 이미지를 저장해 메인 페이지에 시각화
 
-#### 상세 모달 화면
-<p align="center">
-  <img src="지도상세페이지.png" width="48%" alt="지도상세1" />
-  <img src="지도상세페이지2.png" width="48%" alt="지도상세2" />
-</p>
-
-#### 실제 활동 장소 사진 (갤러리)
-<p float="left" align="center">
-  <img src="사진/장소1.jpeg" width="30%" />
-  <img src="사진/장소2.jpeg" width="30%" />
-  <img src="사진/장소3.jpeg" width="30%" />
-</p>
-<p float="left" align="center">
-  <img src="사진/장소4.jpeg" width="30%" />
-  <img src="사진/장소5.jpeg" width="30%" />
-  <img src="사진/장소6.jpeg" width="30%" />
-</p>
+![서약서 페이지](images/screenshots/pledge_page_1.png)
+![서약 완료 및 다운로드](images/screenshots/pledge_page_2.png)
 
 ### 4. 명예 게시판
-학우들과 아너코드 실천 경험을 나누는 공간입니다.
+- 게시글 작성/조회(모달), 검색(제목/작성자/내용), 페이지네이션
+- 좋아요, 댓글, 익명 작성 옵션
+- `localStorage`에 게시판 데이터 저장(서버 없이 동작)
 
-<p align="center">
-  <img src="명예지키기게시판.png" width="48%" alt="게시판1" />
-  <img src="명예지키기게시판2.png" width="48%" alt="게시판2" />
-</p>
-
-- **주요 기능**:
-  - 게시글 작성/조회(모달), 검색(제목/작성자/내용), 페이지네이션
-  - 좋아요, 댓글, 익명 작성 옵션
-  - `localStorage`에 게시판 데이터 저장 (서버 없이 동작하여 데이터 영구 보존은 안 됨)
+![명예 게시판 목록](images/screenshots/board_page_1.png)
+![명예 게시판 글쓰기](images/screenshots/board_page_2.png)
 
 ### 5. 아너 레벨 테스트
-재미있는 상황별 퀴즈를 통해 나의 아너코드 레벨을 확인합니다.
+- 상황형 퀴즈(선택지 기반) + 점수/타입 분류 + 맞춤 조언 제공(한/영)
+- **다국어(KOR/ENG) 전환**: 페이지 이동/새로고침 이후에도 언어 상태 유지(`localStorage`)
 
-<p align="center">
-  <img src="아너레벨테스트.png" width="80%" alt="아너 레벨 테스트" />
-</p>
-
-- **주요 기능**:
-  - 상황형 퀴즈(선택지 기반) 진행
-  - 점수 계산 및 타입 분류 (예: 명예로운 한동인, 노력하는 한동인 등)
-  - 결과에 따른 맞춤 조언 제공 (한/영 지원)
-
----
+![아너 레벨 테스트](images/screenshots/level_test_page.png)
 
 ## 페이지 구성
 
@@ -138,8 +109,10 @@
 /
 ├── css/         # 스타일시트 (style.css)
 ├── js/          # 스크립트 파일들 (*.js)
-├── images/      # 로고 및 연도별 이미지들 (*.png, *.jpg)
-├── 사진/         # 기존 장소 사진들
+├── images/      # 이미지 리소스
+│   ├── screenshots/ # 프로젝트 스크린샷 (README용)
+│   ├── places/      # 섬김 장소 사진들
+│   └── ...          # 로고 및 연도별 이미지 등
 ├── index.html   # 메인 페이지
 ├── page*.html   # 서브 페이지들
 └── README.md

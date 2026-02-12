@@ -1,6 +1,7 @@
 # 2025 Honor Code Web
 
 ### 아너코드 웹 페이지 설계 및 구현 보고서
+
 > **학생 참여 중심의 아너코드 실천 경험 공유 및 소통 플랫폼**
 
 - **제출자**: 22100311 박진우, 22100750 최정현, 22400133 김예진, 22500609 장애서
@@ -29,28 +30,33 @@
 ## 주요 기능
 
 ### 1. 메인 페이지 (서약식 연혁)
+
 2008년부터 2025년까지의 서약식 사진 슬라이더를 통해 아너코드의 역사를 볼 수 있습니다.
 
-![메인 페이지](images/screenshots/main_page_1.png)
-![메인 페이지 슬라이더](images/screenshots/main_page_2.png)
-![2025년 서약식](images/pledge_2025.jpg)
+<p align="center">
+  <img src="images/screenshots/main_page_1.png" width="45%" alt="메인 페이지" />
+  <img src="images/screenshots/main_page_2.png" width="45%" alt="메인 페이지 슬라이더" />
+</p>
 
 - 2008~2025 서약식 사진 슬라이더(자동 재생/도트 이동)
 - 정직 지수 온도계 컴포넌트(로컬 저장)
 - 이미지 파일명 인코딩 처리로 배포 환경 호환성 개선
 
 ### 2. 섬김이 지도
+
 학교 지도 위에서 다양한 섬김 활동 장소를 확인하고 정보를 얻을 수 있습니다.
 
 ![섬김이 지도 페이지](images/screenshots/map_page.png)
-![캠퍼스 지도](images/hgu_map.png)
 
 - **지도 이미지 위 퍼센트 좌표 기반 버튼 배치**(반응형에서도 위치 안정)
 - 장소별 모달 + 다중 이미지 슬라이더 + 섬김 활동 안내(한/영)
 
 #### 지도 상세 및 활동 장소
-![지도 상세 모달 1](images/screenshots/map_detail_1.png)
-![지도 상세 모달 2](images/screenshots/map_detail_2.png)
+
+<p align="center">
+  <img src="images/screenshots/map_detail_1.png" width="45%" alt="지도 상세 모달 1" />
+  <img src="images/screenshots/map_detail_2.png" width="45%" alt="지도 상세 모달 2" />
+</p>
 
 <p float="left">
   <img src="images/places/place_1.jpeg" width="30%" />
@@ -62,6 +68,7 @@
 </p>
 
 ### 3. 명예서약서 (정직 선언문)
+
 - **Canvas 기반 전자 서명**(마우스/터치 모두 지원)
 - 입력 정보(이름/학번/전공) + 서명을 **PDF로 다운로드**(`html2canvas`, `jsPDF`)
 - 서약 완료 시 서명 이미지를 저장해 메인 페이지에 시각화
@@ -70,6 +77,7 @@
 ![서약 완료 및 다운로드](images/screenshots/pledge_page_2.png)
 
 ### 4. 명예 게시판
+
 - 게시글 작성/조회(모달), 검색(제목/작성자/내용), 페이지네이션
 - 좋아요, 댓글, 익명 작성 옵션
 - `localStorage`에 게시판 데이터 저장(서버 없이 동작)
@@ -78,6 +86,7 @@
 ![명예 게시판 글쓰기](images/screenshots/board_page_2.png)
 
 ### 5. 아너 레벨 테스트
+
 - 상황형 퀴즈(선택지 기반) + 점수/타입 분류 + 맞춤 조언 제공(한/영)
 - **다국어(KOR/ENG) 전환**: 페이지 이동/새로고침 이후에도 언어 상태 유지(`localStorage`)
 
@@ -127,7 +136,7 @@
 python3 -m http.server 5500
 ```
 
-## 데이터 저장 방식(중요)
+## 데이터 저장 방식
 
 이 프로젝트는 별도 백엔드가 없으며, 아래 데이터를 **브라우저 `localStorage`**에 저장합니다.
 
